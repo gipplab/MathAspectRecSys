@@ -1,0 +1,626 @@
+\documentclass[sigconf,anonymous]{acmart}
+
+\usepackage{arydshln}
+\usepackage{hyperref}
+\usepackage{multirow}
+% \usepackage[utf-8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\lstdefinelanguage{json}{
+    basicstyle=\small\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{gray!10},
+    literate=
+     *{0}{{{\color{blue}0}}}{1}
+      {1}{{{\color{blue}1}}}{1}
+      {2}{{{\color{blue}2}}}{1}
+      {3}{{{\color{blue}3}}}{1}
+      {4}{{{\color{blue}4}}}{1}
+      {5}{{{\color{blue}5}}}{1}
+      {6}{{{\color{blue}6}}}{1}
+      {7}{{{\color{blue}7}}}{1}
+      {8}{{{\color{blue}8}}}{1}
+      {9}{{{\color{blue}9}}}{1}
+      {:}{{{\color{red}{:}}}}{1}
+      {,}{{{\color{red}{,}}}}{1}
+      {\{}{{{\color{purple}{\{}}}}{1}
+      {\}}{{{\color{purple}{\}}}}}{1}
+      {[}{{{\color{purple}{[}}}}{1}
+      {]}{{{\color{purple}{]}}}}{1},
+}
+
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+\setcopyright{acmlicensed}
+\copyrightyear{2026}
+\acmYear{2026}
+\acmDOI{XXXXXXX.XXXXXXX}
+%% These commands are for a PROCEEDINGS abstract or paper.
+\acmConference[SIGIR '26]{Make sure to enter the correct
+  conference title from your rights confirmation email}{July XX--YY,
+  2026}{Somewhere, Asia}
+
+\acmISBN{978-1-4503-XXXX-X/2018/06}
+\begin{document}
+
+\title{Identifying the most crucial bibliographic research entries in mathematics as recommendations}
+% Identifying the most crucial works for research papers in mathematics as recommendations
+% an aspect aware CB-RS for largest pure and applied math BREs DB zbMATH open
+
+\author{Ankit Satpute}
+\email{Ankit.Satpute@fiz-karlsruhe.de}
+\orcid{0000-0003-3219-026X}
+\affiliation{
+  \institution{FIZ Karlsruhe Leibniz Institute for Information Infrastructure}
+  \streetaddress{Franklinstrasse 11}
+  \city{Berlin}
+  \country{Germany}
+  \postcode{10587}
+}
+
+\author{Noah Gießing}
+\email{Noah.Giessing@fiz-karlsruhe.de}
+\orcid{0009-0006-5268-2519}
+\affiliation{
+  \institution{FIZ Karlsruhe Leibniz Institute for Information Infrastructure}
+  \streetaddress{Franklinstrasse 11}
+  \city{Berlin}
+  \country{Germany}
+  \postcode{10587}
+}
+
+\author{Andr\'{e} Greiner-Petter}
+\email{Greiner-Petter@gipplab.org}
+\orcid{0000-0002-5828-5497}
+\affiliation{
+  \institution{George August University of Göttingen}
+  \streetaddress{Wilhelmsplatz 1}
+  \city{Göttingen}
+  \country{Germany}
+  \postcode{37073}
+}
+
+\author{Moritz Schubotz}
+\email{Moritz.Schubotz@fiz-karlsruhe.de}
+\orcid{0000-0001-7141-4997}
+\affiliation{
+  \institution{FIZ Karlsruhe Leibniz Institute for Information Infrastructure}
+\streetaddress{Franklinstrasse 11}
+  \city{Berlin}
+  \country{Germany}
+  \postcode{10587}
+}
+
+\author{Olaf Teschke}
+\email{Olaf.Teschke@fiz-karlsruhe.de}
+\orcid{0009-0003-4089-9647}
+\affiliation{
+  \institution{FIZ Karlsruhe Leibniz Institute for Information Infrastructure}
+  \streetaddress{Franklinstrasse 11}
+  \city{Berlin}
+  \country{Germany}
+  \postcode{10587}
+}
+
+\author{Akiko Aizawa}
+\email{aizawa@nii.ac.jp}
+\orcid{0000-0001-6544-5076}
+\affiliation{
+  \institution{National Institute of Informatics}
+  \streetaddress{2 Chome-1-2 Hitotsubashi}
+  \city{Tokyo}
+  \country{Japan}
+  \postcode{101-0003}
+}
+
+\author{Bela Gipp}
+\email{gipp@uni-goettingen.de}
+\orcid{0000-0001-6522-3019}
+\affiliation{
+  \institution{George August University of Göttingen}
+  \streetaddress{Wilhelmsplatz 1}
+  \city{Göttingen}
+  \country{Germany}
+  \postcode{37073}
+}
+
+\renewcommand{\shortauthors}{Satpute et al.}
+
+\begin{abstract}
+
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+ <concept>  <concept_id>00000000.0000000.0000000</concept_id>
+  <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>00000000.00000000.00000000</concept_id>
+  <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+  <concept_significance>300</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>00000000.00000000.00000000</concept_id>
+  <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>00000000.00000000.00000000</concept_id>
+  <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+\ccsdesc[300]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+\ccsdesc{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+\ccsdesc[100]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+
+
+\keywords{}
+
+\received{20 February 2007}
+\received[revised]{12 March 2009}
+\received[accepted]{5 June 2009}
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+
+\section{Introduction}
+% A content-based research paper recommender system recommends papers that are similar in content. 
+% However, similarity is an ill-defined concept as research paper articles might be similar in many aspects, such as using the same concept, the same previous work, the same tools, etc.
+% While existing ABRPRS have considered different aspects to bring recommendations, none of them consider aspects in research papers from pure and applied mathematics.
+% Research papers from pure and applied mathematics are different than a typical computer science research paper where we have abstract, introdction, related work section, etc, on the other hand in math we ususally dont have such a structure as papers often just start with two sentence abstract and give the proof, alternate proof, analyze acse extension of previuso proof etc. 
+% There doesnt exists any data that is seggregated in terms of sections or analysis on the doucment level. 
+% As a proof of concept we created a small dataset of research papers in pure and pplied mathmetaics ad their most important ocnnection using an expert. 
+% While we argue that the data is small and might miss sme connections but just to check how the connection in papers looks llike a is a goo start. 
+% We then analyzed the connections to categorieze how these paper might be connected. 
+% Figure 1 shows a papaer and their conenctions.
+% These are fundamentally differrent from the connection in existing dataset. 
+% Idntifying such cnnection adds up a difficutly if there are no full-texts availabel which is the cas ein bibliographic digital librares such as zbMATh open. 
+
+% While existing aspects provide information on how they are similar, they are still on a broad level of similarity.
+% Aspects such as introduction, Related work, dataset, etc., are helpful in general similarity; however, they don't provide insight into exactly how these datasets are connected to the paper.
+% In mathematics, datasets are not commonly used, especially in pure and applied mathematics research.
+% There exists a citation intent or aspect, such as positive, negative, or neutral, but it does not indicate how it is utilized.
+
+% % To understand how research papers in mathematics might be connected we created a 
+
+% Domain specific bibliographic digital research paper libraries have been a primary source for exploration in many domains, where people go at first to explore connections between articles. 
+% Example for such are DBLP (for computer science), PubMed (medicine), zbMATH Open (mathematics), etc.
+% None of such libraries currently have a recommender system to suggest articles that might be connected to the article currently viewed by a user. 
+
+
+% \section{Related work}
+
+% Related work in three categories.
+% Aspect-based similarity in research papers by text content
+% Citation-intent prediction or classification.
+% GNN for link prediction and ranking, enabling the discovery of new connections.
+
+\section{RQ1: What do recommendations in mathematics look like?}
+
+(not bc we did not follow this procedure)To see what math recommendations look like, we use content-based similarity, which recommends articles that are similar.
+1. For that we use zbMATH Open reviews.
+2. Why, bcz reviewers write works that should be read or imp to read abot the paper.
+Or 
+1. We ask a mathematician to give us recommendations.
+2. We checked how similar to get unique connections.
+3. They are indeed connected in more theorotical or extsnion way. (also explain why it is difficult to get that vased on BREs bcz BRES are very specific the doent have full text and even with full text it could be difficult as it doesnt follow the same structure)
+4. Are such recommendations also vailable in other domain, yes, but they have broad categories ours (maths) are more distinct.
+5. Existiing work get these aspects through citation mentions, good to have bulk data.
+6. We dont have full appers as math appers dont really have section wise thing or there is no other dataset availabel to do so.
+7. We go to reviews as gives us indication on how in-review citations are similar.
+8. We see what is overlapping or differrent in both datasets.
+9. They can be used compliemnetary depending on the scale.
+10. How does it compare with other datasets?
+
+% How do we approach this RQ?
+The goal of this section is to explore and establish aspects of similar Bibliographic Research Entries (BREs) in mathematics for recommendations.
+Addressing RQ1 helps us uncover the characteristic ways in which mathematical works are conceptually connected to get recommendations.
+For this task, we utilize zbMATH Open\footnote{\url{https://zbmath.org/}}, as it's one of the largest digital libraries of pure and applied mathematics BREs~\cite{deb2024zbmathovrvw}.
+We construct and analyze two new datasets that capture aspect similarities between BREs in mathematics.
+First, a large \textbf{Silver}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{SilverRiM}).
+Second, a small \textbf{Gold}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{GoldRiM}).
+
+
+We utilize zbMATH Open reviews to obtain recommendations.
+zbMATH Open BREs contains one of the following: a review, a summary, both of which are written by reviewers, or an abstract of the research paper. 
+It does not contain full-texts but provides links to the original publisher or repository where the full text can be obtained.
+Reviewers in zbMATH Open are experts in mathematics who provide a review or summary (hereafter referred to as a review), a well-balanced description of the paper's content within the context of current developments in the corresponding subject area. 
+They are trained mathematicians who are selected by the editor-in-chief of zbMATH Open, based on their publication record, teaching experience, and overall expertise in the field.
+In the following sections, we describe both the datasets along with their construction processes. 
+
+\subsection{SilverRiM}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.48\textwidth]{images/aspect_SILVERst.pdf}
+    \caption[An example seed BRE from zbMATH Open]{%
+        An example seed BRE (Zbl 1525.13023~\cite{exSeedBRE})\protect\footnotemark[1]
+        from zbMATH Open with potential recommendations 
+        (Zbl 0451.13008\protect\footnotemark[2]~\cite{exRecmndBRE1}, 
+        Zbl 1436.13034\protect\footnotemark[3]~\cite{exRecmndBRE2}) and extracted aspects 
+        in the SilverRIM dataset.%
+    }
+    \label{fig:exampleSILVER}
+\end{figure}
+\footnotetext[1]{\url{https://zbmath.org/1525.13023}}
+\footnotetext[2]{\url{https://zbmath.org/0451.13008}}
+\footnotetext[3]{\url{https://zbmath.org/1436.13034}}
+
+In zbMATH Open, reviewers often cite other works directly within their review texts. 
+When the cited works exist in zbMATH Open, reviewers include the respective ID (Zbl) to enable direct access. 
+These in-review citations, along with the sentence in which they are cited, reveal the relationship between two mathematical papers.
+A reviewer may cite a prior paper to highlight a method, a motivation, or a result to name a few. 
+Figure~\ref{fig:exampleSILVER} shows an example of a seed BRE with its in-review citations as recommendations.
+We identify two descriptive terms, \textit{generalizes} and \textit{answer}, as aspects that indicate distinct relationships between the recommendations and the seed paper. 
+As of October 2025, zbMATH Open contains 812,241 BREs with 1,286,410 in-review citations that can be used to extract and study aspect similarity in mathematics on a scale.
+
+
+Manual annotation of aspects across millions of BREs is infeasible. 
+Therefore, we employ an LLM-based approach to automatically extract aspects from in-review citations.
+To obtain aspects, we utilize Qwen2.5-14B~\cite{qwen2025qwen25technicalreport} as it's the best-performing~\cite{koloveas2025can} few-shot model in the citation-intent prediction task on the SciCite~\cite{cohan2019structural} and ACL-LRC~\cite{Jurgens2018ACLARC} datasets.
+On both datasets, Qwen2.5-14B was able to identify aspects such as \textit{Background}, \textit{Method}, or \textit{Result} with the highest accuracy among instruction LLMs.
+Although LLM-based annotations are not as accurate as human annotations, annotations with prompts produce human-annotated like data if not better than~\cite{horych-etal-2025-promises,tan-etal-2024-large}.
+Our objective here is not to evaluate the LLM, but to leverage it to efficiently generate weakly supervised aspects.
+This enables us to have a large-scale dataset with aspects that can serve as a foundation for kickstarting aspect similarity research in the mathematics domain.
+Considering even obtaining a single review at zbMATH Open requires months of time\footnote{\url{https://zbmath.org/about/\#:~:text=Indexing\%20decisions\%22.-,Reviewing,-Published\%20items\%20are}}, we expect a similar time for gathering recommendations if constructed manually.
+% By utilizing an LLM-based solution, we eliminate these time-consuming efforts and achieve as accurate aspect labels as possible, enabling us to understand connections in BREs from a mathematical perspective.
+
+We designed a concise few-shot prompt (Appendix~\ref{Appendix:prompt}) with three examples, as prior work indicates that larger prompts (e.g., 10 examples) reduce accuracy~\cite{koloveas2025can}. 
+The model is asked to assign aspects in JSON format, enabling structured outputs even when multiple citations appear within a single review.
+We passed 812,241 BREs through Qwen2.5-14B using the designed prompt and asked it to get mentioned Zbl citation along with the aspect.
+It worked correctly for 795,871 BREs, and for others gave either erroneous JSON, or no aspect or invalid Zbl.  
+It assigned 978,238 unique aspects (including stop words is considered as a different aspect\footnote{counted considering "Extends" and "Extends to" as a separate aspect.}) for 1,031,239 BRE pairs.
+We apply the following quality check steps to obtain the final set of aspects.
+First, \textbf{Normalization}, in which we stem and lemmatize extracted aspects using the Porter Stemmer, reducing them to a consistent set of 10,728 base forms.
+For example, \textit{introduce}, \textit{introduced}, \textit{introduces}, \textit{introducing} becomes \textit{introduce}.
+Second, \textbf{Filtering}, we manually inspected the normalized aspects having less than 1000 BREs to remove aspects that did not make sense due to probable LLM errors or absence of potential single word aspect in the review. 
+% We identified such aspects by checking those with the fewest BREs and then eliminating them.
+Such aspects include \textit{due}, \textit{first}, \textit{conference}, \textit{see}, \textit{roll}, etc. 
+This step leaves us with 919,655 recommendations with 7,241 aspects for 745,264 BREs.
+% Third, \textbf{Unification} using word vectors, where we unified aspects that could be categorized together, such as \textit{inspir} and \textit{motiv} to \textit{motiv}, \textit{extend} and \textit{extens} to \textit{extend}, etc.
+% Ultimately, we are left with 398 aspects. 
+The top 20 aspects and their frequencies are shown in Figure~\ref{fig:SilverRIMwordFreq}, and their short description devised based on examples is in Appendix Table~\ref{tab:silverrim_aspects}.
+The aspect with most BREs, i.e, \textit{collect} represents\footnote{For example, \url{https://zbmath.org/1557.90300} mentions a reference to a conference collection \url{https://zbmath.org/1531.93014} at zbMATH Open} collection of lecture notes or conference proceedings like entry at zbMATH Open.
+Many of the top 20 aspects appear across multiple papers, indicating that relationships are shared, which helps us identify common patterns of connections in mathematics.
+In Table~\ref{tab:dataset_characteristics}, we report characteristics of the resulting SilverRiM dataset.
+Dataset and its construction steps are freely available\footnote{\url{https://anonymous.4open.science/r/Aspect-Similarity-Math-BRE-Recsys-8098/}\label{gitlink}}. 
+
+Thus, SilverRiM is the first dataset with aspects from BREs in mathematics, giving us unique aspects in which math BREs are similar.
+However, a question remains: Do reviewers actually conceptualize recommendations using the aspects found in SilverRiM if they were given the task of giving recommendations, or are there additional aspects we have missed? 
+This motivates the creation of an expert-validated evaluation dataset.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/silverrim_aspect_frequency_combined_halfway.pdf}
+    \caption{Top 20 aspects' frequency distribution in the SilverRiM dataset.}
+    \label{fig:SilverRIMwordFreq}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Characteristics of GoldRiM and SilverRiM Datasets}
+\label{tab:dataset_characteristics}
+\begin{tabular}{lcc}
+\hline
+\textbf{Characteristic} & \textbf{GoldRIM} & \textbf{SilverRIM} \\
+\hline
+Total BRE Seeds & 40 & 745,264 \\
+BRE Pairs (Recommendations) & 147 & 919,655 \\
+Unique aspects & 7 & 7,241 \\
+Recommendations per Seed & 3.67 & 1.23 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{GoldRiM}
+
+While SilverRiM offers large-scale coverage, GoldRiM aims to validate and enrich the extracted aspects through additional expert insight. 
+Expert annotation is crucial for determining whether the automatically derived aspects from SilverRiM accurately reflect mathematical reasoning or if important categories are being overlooked.
+Expert annotation is a resource-intensive process that requires domain expertise.
+To obtain this level of expert knowledge, we turned to zbMATH open reviewers, who review mathematical publications in their area of research.
+We identified active reviewers who had reviewed papers included in SilverRiM and who continue to serve as reviewers for zbMATH open.
+One expert reviewer agreed to annotate a sample of 40 seed BREs.
+We then randomly selected 40 BREs from SilverRiM belonging to the expert reviewer's research area and asked them to provide recommendations with aspects by following two steps.
+First, they were asked to provide recommendations that they would like to read next after seeing each of the 40 seed BREs.
+Second, for each identified recommendation, they must assign a category that would explain in what aspect the selected recommendation and seed BREs are connected.
+The expert reviewer provided us with 147 recommendations and 7 aspects.
+The expert reviewer pointed out that they did not initially agree with the category and often revisited and merged categories based on their expertise, which accurately represented the connection. 
+A brief description of each of the seven aspects is provided in Table~\ref{tab:goldrim_aspects}.
+Table~\ref{tab:aspects} shows aspects identified in the GoldRiM dataset.
+Four of these aspects: \textit{Motiv}, \textit{Case}, \textit{Extend}, and \textit{Compare} also appear in SilverRiM, confirming the reliability of the LLM-based extraction. 
+Three additional aspects: \textit{Applic}, \textit{Alternativ}, and \textit{Specialize} are unique to GoldRiM, suggesting finer-grained distinctions used by the expert reviewer.
+These distinctions are related to categories from SilverRiM.
+For example, the \textit{Alternativ} aspect in GoldRiM captures a relationship between studies offering alternative approaches, which might have been broadly categorized as \textit{studi} in SilverRiM. 
+We retain these distinctions for future qualitative analyses, as they may prove meaningful in separating similarity type. 
+Dataset characteristics are summarized in Table~\ref{tab:dataset_characteristics}. 
+The Dataset and its construction steps are freely available\textsuperscript{\ref{gitlink}}.
+
+\subsection{RQ1 discussion}
+
+\begin{table*}[h]
+\centering
+\caption{Categorizations of aspects in previous works vs our curated math-specific work.}
+\label{tab:aspects}
+\begin{tabular}{llll}
+\hline
+constructed using & Dataset & Categorization of aspects & \# of doc pairs\\
+%add lable extraction manual or artificial using tools?
+\hline
+full-paper and citations & Modified AAN~\cite{chakraborty2016ferosa} & Background, Alternative Approaches, Methods, Comparison & 61,051\\
+full-paper and citations & PICO~\cite{jain2018PICObiomed} & Population, Interventions, Outcomes & 41,000\\
+full-paper and citations & CSCW~\cite{chan2018solventCSCW} & Background, Purpose, Mechanism, Findings & 1225\\
+full-paper and citations & Papers with code~\cite{Ostendorff2022a} & Task, Dataset, Result & 1,570,235\\
+\hline
+Citations & Modified ACL~\cite{kobayashi2018ACL} & Objective, Method, Result & 34,760\\
+Citations & ACL-ARC~\cite{Jurgens2018ACLARC} & Background, Method, Result & 1,941\\
+Citations & SciCite~\cite{cohan2019structural} & Background, Method, Result & 11,020\\
+\hline
+Citations (Ours) & GoldRIM & Extend, Case, Applic, Alternativ, Motiv, Specialize, Compare & 147\\
+Citations (Ours)& SilverRIM & Collec, Result,  Gener, Introduc, Extend, prove, review, and 7,232 other & 89,786\\
+\hline
+\end{tabular}
+\end{table*}
+
+Table~\ref{tab:aspects} compares our identified and established mathematics-specific aspects with those in previous studies on aspect similarity used for recommendations.
+Existing datasets mainly include broad categories such as \textit{Background}, \textit{Method}, and \textit{Result}, which are typically derived from the sections of research papers where citations occur. 
+However, this section-based grounded aspects provides only a rough indication of research article similarity. 
+It does not reveal the actual reason or aspect behind the connection, whether the cited work is being mentioned for context, actually used as a method, extended, compared, improved upon, etc.
+In contrast, our datasets SilverRiM and GoldRiM capture mathematics-specific conceptual aspects such as \textit{Extend}, \textit{Motiv}, \textit{Compare}, etc. 
+These aspects are more specific, domain-dependent, explanatory than based on section mentions as seen in the existing datasets. 
+This distinction highlights that mathematical research relationships are defined less by empirical evidence or datasets and more by logical, structural, and conceptual reasoning among problems, proofs, and methods.
+These findings directly address RQ1, showing that aspect-based similarities in mathematics differ significantly from those observed in other scientific domains.
+The identified aspects reveal that mathematical works are connected through theoretical development and conceptual relationships unique from other domains that are represented in existing datasets.
+This domain-specific nature underlines the importance of our newly established datasets for advancing research on aspect-based similarity in mathematics.
+
+\section{RQ2: How do existing systems perform? and qualitative analysis}
+
+doc1, doc2, aspectlabel 0 or 1, train model for each aspect, and then get similar candidates for each aspect by retrieving embeddings.
+For each aspect you need to train an embedding model, so it is infeasible to have 560 embedding models, with each model having to embed 5 million docs for retrieval. 
+
+\section{RQ3: trained GNN for reviewer-preferences based recommendations and qualitative analysis}
+
+\section{Acknowledgments}
+
+%%
+%% The next two lines define the bibliography style to be used, and
+%% the bibliography file.
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{main_}
+
+
+\appendix
+
+\section{Prompt used for extracting SilverRIM aspects}\label{Appendix:prompt}
+
+\section*{Task Description}
+You are tasked with extracting the relationship between a statement and its cited work (indicated by a Zbl reference number). Identify the key phrase that describes how the current work relates to each cited work.
+
+Return your answer as a valid JSON object with the following structure:
+
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "the Zbl reference number",
+      "relationship": "the key phrase"
+    }
+  ]
+}
+\end{lstlisting}
+
+\section*{Examples}
+
+\subsection*{Example 1}
+
+\textbf{Input:} ``For any integral arrangement $U$ and a chamber $\Delta$ the author constructs a local residue form $\omega_\Delta(U)$ and a pairing $\langle,\rangle$ such that for any $t\in\Delta$ one has $B_\Delta f(t)=\langle\omega_\Delta(U),f\exp(t)\rangle$. His constructions are essentially based on the notion of iterated residue of $U_C$-meromorphic functions where $U_C$ is the complexification of the arrangement $U$. The author underlines that his study of these sums was inspired by the works of E. Witten [Commun. Math. Phys. 141, 153-209 (1991; Zbl 0762.53063) and J. Geom. Phys. 9, 303-368 (1992; Zbl 0768.53042)].''
+
+\textbf{Output:}
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "Zbl 0762.53063",
+      "relationship": "inspired"
+    },
+    {
+      "zbl_number": "Zbl 0768.53042",
+      "relationship": "inspired"
+    }
+  ]
+}
+\end{lstlisting}
+
+\subsection*{Example 2}
+
+\textbf{Input:} ``The authors investigates the natural question of the rationality of $f$. Previously, J. J. Duistermaat and W. van der Kallen [Indag. Math., New. Ser. 9, No. 2, 221–231 (1998; Zbl 0916.22007)] proved that if $I_\lambda(f_\sigma,\omega)\in C(\lambda)$ and $f$ is a proper non-constant morphism, then $I_\lambda(f_\sigma,\omega)=0$. Here, a necessary and sufficient condition for $I_\lambda(f_\sigma,\omega)$ to extend to a single-valued holomorphic function on the complement of a finite set in $P^1(\mathbb{C})$ is given. By a result of N. Nilsson [Ark. Mat. 5, 527–540 (1965; Zbl 0144.36302)] this is equivalent to the rationality of $I_\lambda(f_\sigma,\omega)$. Moreover, the criterion can be used to determine the set $\{\sigma\mid I_\lambda(f,\sigma,\omega)\in C(\lambda)\}$ from the pair $(f,\omega/df)$ when $X$ is a curve.''
+
+\textbf{Output:}
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "Zbl 0916.22007",
+      "relationship": "proved"
+    },
+    {
+      "zbl_number": "Zbl 0144.36302",
+      "relationship": "result"
+    }
+  ]
+}
+\end{lstlisting}
+
+\subsection*{Example 3}
+
+\textbf{Input:} ``The paper under review was motivated by some questions on compact Lie groups raised by O. Mathieu [in: Algèbre non commutative, groupes quantiques et invariants. Sémin. Congr. 2, 263–279 (1995; Zbl 0889.22008)]. In the last section, the author gives a counterexample to Mathieu's second conjecture.''
+
+\textbf{Output:}
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "Zbl 0889.22008",
+      "relationship": "motivated"
+    }
+  ]
+}
+\end{lstlisting}
+
+\subsection*{Example 4}
+
+\textbf{Input:} ``Now, strictly speaking the second category does not make sense at the present time since the semi-infinite flag manifold does not carry an algebro-geometric structure allowing a theory of perverse sheaves on it. The authors circumvent this problem by defining an ad-hoc category $\text{Perv}(\text{Fl}_{\infty/2})$; this approach was initiated in [M. Finkelberg, I. Mirkovic, Differential topology, infinite-dimensional Lie algebras, and applications. D. B. Fuchs 60th anniversary collection. Providence, RI: American Mathematical Society. Transl., Ser. 2, Am. Math. Soc. 194(44), 81–112 (1999; Zbl 1076.14512)]. The definition uses a geometric object introduced by Drinfeld and denoted $\overline{\text{Bun}}_{N^-}$. This object $\overline{\text{Bun}}_{N^-}$ classifies principal $G$-bundles on $X$ endowed with a possibly degenerate reduction to the maximal unipotent subgroup $N^-$; see [A. Braverman, M. Sanz-Solé, (ed.) et al., Proceedings of the international congress of mathematicians (ICM), Madrid, Spain, August 22–30, 2006. Volume II: Invited lectures. Zürich: European Mathematical Society (EMS), 1145–1170 (2006; Zbl 1118.22007)] for more details and references.''
+
+\textbf{Output:}
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "Zbl 1076.14512",
+      "relationship": "initiated"
+    },
+    {
+      "zbl_number": "Zbl 1118.22007",
+      "relationship": "details"
+    }
+  ]
+}
+\end{lstlisting}
+
+\section*{Test Case}
+
+\textbf{Input:} ``About fifteen years ago, the physicist E. Verlinde proposed a stunning formula for the dimension of the space of conformal blocks within the Wess-Zumino-Witten model of conformal quantum field theory. Verlinde's formula involves certain rational trigonometric sums of highly complicated combinatorial structure, whose effective computation represents a real mathematical challenge. On the other hand, this formula turned out to have a close relationship to the geometry of the moduli spaces of flat connections over compact Riemann surfaces, and it was this spectacular, utmost striking discovery that opened the way to computing various intersection numbers in the enumerative geometry of such moduli spaces. The paper under review makes another step forward in this direction. Namely, in order to help to uncover the geometric information hidden in Verlinde's formula, the author derives a compact polynomial formula computing certain rational trigonometric sums occuring in this context. Building upon his earlier results on rational sums and Bernoulli polynomials corresponding to central hyperplane arrangements [A. Szenes, Int. Math. Res. Not. 1998, No. 18, 937-956 (1998; Zbl 0968.11015)], the author extends these investigations to affine hyperplane arrangements, obtains then a local formula for rational trigonomteric sums of ``Verlinde-type'', and compares his formula to a related result in the work of J.-M. Bismut and F. Labourie [Symplectic geometry and the Verlinde formulas, Surv. Differ. Geom., Suppl. J. Differ. Geom. 5, 97–311 (1999; Zbl 0997.53066)]. In fact, and as the author points out, one of the main goals of his paper under review is to prove the equality of the two formulas, which is achieved in great generality. Finally, the author's local sum formula is also related to the results of M. Brion and M. Vergne on vector partition functions [J. Am. Math. Soc. 10, 797–833 (1997; Zbl 0926.52016)]. However, this particular relationship is still in the process of closer inspection [A. Szenes and M. Vergne, Adv. Appl. Math. 30, 295–342 (2003; Zbl 1067.52014)]. No doubt, the paper under review is an important contribution to the current research on the combinatorics and geometry of the Verlinde formulas.''
+
+\textbf{Expected Output:}
+\begin{lstlisting}[language=json]
+{
+  "citations": [
+    {
+      "zbl_number": "Zbl 0968.11015",
+      "relationship": "results"
+    },
+    {
+      "zbl_number": "Zbl 0997.53066",
+      "relationship": "compares"
+    },
+    {
+      "zbl_number": "Zbl 0926.52016",
+      "relationship": "related"
+    },
+    {
+      "zbl_number": "Zbl 1067.52014",
+      "relationship": "inspection"
+    }
+  ]
+}
+\end{lstlisting}
+
+% Appendix: Aspect Definitions
+\section*{Appendix A: Aspect Definitions}
+\label{Appendix:aspects}
+
+\begin{table*}[h]
+\centering
+\caption{GoldRiM Aspect Definitions}
+\label{tab:goldrim_aspects}
+\small
+\begin{tabular}{p{2.5cm}p{12cm}}
+\hline
+\textbf{Aspect} & \textbf{Description} \\
+\hline
+Extend & extends results, theorems, or methods from the referenced paper to broader contexts, higher dimensions, or more general settings \\
+\hline
+Case & examines a specific case, special instance, or particular example of concepts presented \\
+\hline
+Applic & applies methods, theorems, or techniques from the seed paper to solve problems in different mathematical areas or practical domains \\
+\hline
+Alternativ & presents an alternative approach, different proof method, or competing technique for addressing the same mathematical problem or question \\
+\hline
+Motiv & provides motivation, context, or foundational ideas that inspired or led to the work \\
+\hline
+Specialize & focuses on a more specialized or restricted version of the general framework presented \\
+\hline
+Compare & compares, contrasts, or evaluates different methods, results, or approaches discussed in the seed paper \\
+\hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[h]
+\centering
+\caption{SilverRiM Top 20 Aspect Definitions}
+\label{tab:silverrim_aspects}
+\small
+\begin{tabular}{p{2.5cm}p{12cm}}
+\hline
+\textbf{Aspect} & \textbf{Description} \\
+\hline
+introduc & used concepts, definitions, objects, or frameworks that are introduced \\
+\hline
+gener & generalizes results, methods, or structures from more specific or restrictive cases \\
+\hline
+extend & extends prior results, theorems, or techniques to new settings, dimensions, or conditions \\
+\hline
+prove & proves theorems, lemmas, or conjectures that are cited or built upon \\
+\hline
+studi & studies, investigates, or analyzes mathematical objects, phenomena, or structures \\
+\hline
+part & forms part of a series, related body of work, part 1 or two of the same works or larger research program \\
+\hline
+propos & proposes new methods, algorithms, conjectures, or theoretical frameworks based on referenced paper \\
+\hline
+continu & continues research, extends earlier work, or builds upon previous investigations \\
+\hline
+improv & improves existing results, bounds, estimates, or methods \\
+\hline
+discuss & discusses topics, questions, or implications that are also addressed in the referenced paper \\
+\hline
+defin & refrenced papers defines mathematical objects, structures, or concepts that are used in the seed paper \\
+\hline
+develop & develops theory, methods, or tools that are applied or mentioned \\
+\hline
+deriv & derives formulas, equations, identities, or results that appear in or relate \\
+\hline
+correct & corrects errors, refines arguments, or addresses issues from earlier work discussed in the seed paper \\
+\hline
+investig & investigates properties, behaviors, or characteristics of mathematical structures also studied in the seed paper \\
+\hline
+conjectur & poses conjectures, open problems, or questions that are addressed or mentioned \\
+\hline
+translat & translates concepts, results, or methods between different mathematical languages, frameworks, or areas of study \\
+\hline
+origin & presents original work that serves as a foundation or starting point for developments \\
+\hline
+question & raises questions, problems, or research directions that are explored or answered \\
+\hline
+establish & establishes fundamental results, frameworks, or theories that underpin work presented \\
+\hline
+\end{tabular}
+\end{table*}
+
+\noindent \textbf{Note:} These aspect definitions were derived from analysis of in-review citations in zbMATH Open reviews. Aspects describe the relationship between a seed paper and its recommended related work, indicating why the recommendation is relevant to readers of the seed paper.
+
+\end{document}
+\endinput
+%%
+%% End of file `sample-sigconf.tex'.
