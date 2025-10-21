@@ -7,7 +7,7 @@
 \usepackage{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{amsmath}
+\usepackage{amsmath} 
 \usepackage{amsfonts}
 
 \lstdefinelanguage{json}{
@@ -139,7 +139,13 @@
 \renewcommand{\shortauthors}{Satpute et al.}
 
 \begin{abstract}
-
+Mathematical research papers differ from those in most other scientific domains: their connections are often conceptual, structural, or logical rather than lexical or empirical. 
+Existing recommender systems for research papers typically rely on textual or citation-based similarity, which may not capture mathematics specific relationships. 
+In this paper, we investigate what recommendations in mathematics look like and establish the first two datasets of mathematical paper recommendations, GoldRiM and SilverRiM, capturing concrete ways in which mathematical research papers are related and could be recommended. 
+GoldRiM is a small, high-quality, expert-annotated dataset of 420 recommendations, capturing seven distinct conceptual relationship types. 
+SilverRiM is a large-scale, automatically generated dataset of 919K recommendation pairs and 7,241 aspects, extracted using LLM-based aspect identification from 812K zbMATH reviews. 
+Together, they reveal that mathematical recommendations are driven by aspect-level conceptual relationships, such as extension, specialization, or motivation, rather than surface-level textual similarity. 
+We release both datasets publicly to facilitate future research on mathematics-aware recommendation systems and conceptual similarity modeling.
 \end{abstract}
 
 \begin{CCSXML}
@@ -217,36 +223,70 @@
 
 \section{RQ1: What do recommendations in mathematics look like?}
 
-(not bc we did not follow this procedure)To see what math recommendations look like, we use content-based similarity, which recommends articles that are similar.
-1. For that we use zbMATH Open reviews.
-2. Why, bcz reviewers write works that should be read or imp to read abot the paper.
-Or 
-1. We ask a mathematician to give us recommendations.
-2. We checked how similar to get unique connections.
-3. They are indeed connected in more theorotical or extsnion way. (also explain why it is difficult to get that vased on BREs bcz BRES are very specific the doent have full text and even with full text it could be difficult as it doesnt follow the same structure)
-4. Are such recommendations also vailable in other domain, yes, but they have broad categories ours (maths) are more distinct.
-5. Existiing work get these aspects through citation mentions, good to have bulk data.
-6. We dont have full appers as math appers dont really have section wise thing or there is no other dataset availabel to do so.
-7. We go to reviews as gives us indication on how in-review citations are similar.
-8. We see what is overlapping or differrent in both datasets.
-9. They can be used compliemnetary depending on the scale.
-10. How does it compare with other datasets?
+% Bullet points summarry: 
+% 1. We ask a mathematician to give us recommendations (so we create GoldRiM).
+% 2. We checked how similar to get unique connections.
+% 3. They are indeed connected in more theorotical or extsnion way. (also explain why it is difficult to get that vased on BREs bcz BRES are very specific the doent have full text and even with full text it could be difficult as it doesnt follow the same structure)
+% 4. Are such recommendations also vailable in other domain, yes, but they have broad categories ours (maths) are more distinct.
+% 5. Existiing work get these aspects through citation mentions, good to have bulk data.
+% 6. We dont have full appers as math appers dont really have section wise thing or there is no other dataset availabel to do so.
+% 7. We go to reviews as gives us indication on how in-review citations are similar.
+% 8. We see what is overlapping or differrent in both datasets.
+% 9. They can be used compliemnetary depending on the scale.
+% 10. How does it compare with other datasets?
+In this research question, we investigate how recommendations in mathematics could be and establish two datasets.
+To the best of our knowledge, no prior dataset of research paper recommendations in mathematics exists.
+We therefore collaborated with an expert mathematician to manually provide recommendations and analyze their nature.
+This results in a small, high-quality \textbf{Gold}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{GoldRiM}).
+Motivated by the insights from \textbf{GoldRiM}, we subsequently developed a large-scale, automatically constructed \textbf{Silver}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{SilverRiM}).
+Both datasets are derived from zbMATH Open\footnote{\url{https://zbmath.org/}}, one of the most comprehensive digital libraries in pure and applied mathematics~\cite{deb2024zbmathovrvw}.
+In the following sections, we first introduce zbMATH Open and then describe how \textbf{GoldRiM} and \textbf{SilverRiM} were created, highlighting what they reveal about the nature of mathematical recommendations.
 
-% How do we approach this RQ?
-The goal of this section is to explore and establish aspects of similar Bibliographic Research Entries (BREs) in mathematics for recommendations.
-Addressing RQ1 helps us uncover the characteristic ways in which mathematical works are conceptually connected to get recommendations.
-For this task, we utilize zbMATH Open\footnote{\url{https://zbmath.org/}}, as it's one of the largest digital libraries of pure and applied mathematics BREs~\cite{deb2024zbmathovrvw}.
-We construct and analyze two new datasets that capture aspect similarities between BREs in mathematics.
-First, a large \textbf{Silver}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{SilverRiM}).
-Second, a small \textbf{Gold}-standard dataset of \textbf{R}ecommendations \textbf{i}n \textbf{M}athematics (\textbf{GoldRiM}).
-
-
-We utilize zbMATH Open reviews to obtain recommendations.
-zbMATH Open BREs contains one of the following: a review, a summary, both of which are written by reviewers, or an abstract of the research paper. 
-It does not contain full-texts but provides links to the original publisher or repository where the full text can be obtained.
+\subsection{zbMATH Open}
+We utilize zbMATH Open and their reviewers to study recommendations in mathematics.
+zbMATH open contains Bibliographic Research Entries (BREs), which contain research metadata such as title, keywords, Mathematics Subject Classification codes, authors, year, and more.
+zbMATH Open BREs contains one of the following: a review, a summary, both of which are written by reviewers, or an abstract of the research paper.
+Full texts are not included, but zbMATH Open provides links to publishers or repositories where they can be accessed.
 Reviewers in zbMATH Open are experts in mathematics who provide a review or summary (hereafter referred to as a review), a well-balanced description of the paper's content within the context of current developments in the corresponding subject area. 
 They are trained mathematicians who are selected by the editor-in-chief of zbMATH Open, based on their publication record, teaching experience, and overall expertise in the field.
-In the following sections, we describe both the datasets along with their construction processes. 
+Thus, zbMATH Open reviews provide rich, expert-written context for understanding how a paper conceptually connects to others, making it ideal for studying recommendation relationships.
+
+\subsection{GoldRiM}
+We first collaborated with an experienced zbMATH Open reviewer to manually construct the \textbf{GoldRiM} dataset.
+The reviewer was given 80 randomly selected BREs (seeds) from their area of expertise and asked to recommend content-wise similar BREs, i.e., papers they would naturally read next.
+This process yielded 420 recommendations for the 80 seed papers.
+To analyze why these particular recommendations were chosen, we first examined simple overlaps in text, mathematical expressions, and citations.
+We found that the textual and mathematical overlap between seeds and recommendations was minimal, often limited to a few shared terms or symbols.
+Additionally, about 47\% of recommendations involved direct citation links (either the seed cited the recommendation or vice versa), but many other cited papers were not recommended.
+The remaining 53\% of pairs had no citation overlap at all.
+Hence, surface-level similarity in text, formula, or citation was insufficient to explain the expert’s recommendations.
+
+We therefore conducted a qualitative analysis on 100 seed-recommendation pairs (across 27 seeds).
+For each pair, we examined metadata, reviews, and, where available, full texts, to infer why a recommendation was made.
+When citations existed, we tried to find why this particular citation was made and not others by looking at full texts or what the contribution of an article was over its cited one.
+For non-cited pairs, we consulted the expert reviewer to understand the conceptual connection.
+This analysis revealed diverse kinds of relationships, each representing a specific aspect of similarity.
+We merged them into seven categories, summarized in Table~\ref{tab:goldrim_aspects}.
+For example, the category \textit{Extend}, assigned where one paper extends the ideas, methods, or proofs of another.
+% This extension, however, if it cites the paper it extends, the citation occurs only a few times and sometimes even once, where authors simply mention it in the full-text and proceed with the proof or further analysis.
+% There were other papers that also extend the seed, but the recommendation is given because this extension is more influential and reveals important things than other extensions. This was explained by the reviewer.
+% In some cases, the seed extends the recommendation and is not cited because citation info is not available in zbMATH Open, but in the full-texts only.
+% One other example is the category \textit{Alternativ}, in which the seed provides an alternative approach to what is done in the recommendation. 
+% There might be other alternative approaches, but this approach by seed uncovers something crucial in math that is surprising or not expected.
+These categories capture how recommendations were related, not by textual similarity, but by logical, conceptual, or structural connections.
+For instance, a paper may extend another’s theorem without extensive textual overlap or even direct citation, yet experts perceive them as inherently linked.
+In summary, \textbf{GoldRiM} provides the first evidence that recommendations in mathematics are driven by aspect-level conceptual relationships, rather than surface features.
+The dataset (and its construction pipeline) is publicly available\textsuperscript{\ref{gitlink}}.
+While limited in scale and based on a single expert, it provides a foundational understanding of what “recommendation” means in the mathematical domain.
+It is possible that other experts or similar connected papers might reveal different aspects and provide more insights into how recommendations in mathematics are presented.
+This motivates us to look for such recommendations at scale.
+
+% A brief description of each of the seven aspects is provided in Table~\ref{tab:goldrim_aspects}.
+% The identified aspects tell us that mathematical recommendations could be connected based on theoretical and concrete connections that might not be visible by just bibliographic info or full-text overlap but one might need to have a deep understanding of the concepts to know hey they are connected or can be obtained on deep foundational level on how they are connected.
+% We observed from annotation of categories that the connection between recommendations is more logical, conceptual, or structural than mere overlap of tokens or citation sharing in view of content similarity.  
+% In this section, we created \textbf{GoldRiM}, the first dataset of recommendation mathematics and tried to discover how recommendations in mathematics look like. 
+% The Dataset and its construction steps are freely available\textsuperscript{\ref{gitlink}}.
+% However, the resulting dataset is small and we only used one expert to obtain recommendations and identify aspects. 
 
 \subsection{SilverRiM}
 
@@ -266,48 +306,51 @@ In the following sections, we describe both the datasets along with their constr
 \footnotetext[2]{\url{https://zbmath.org/0451.13008}}
 \footnotetext[3]{\url{https://zbmath.org/1436.13034}}
 
-In zbMATH Open, reviewers often cite other works directly within their review texts. 
-When the cited works exist in zbMATH Open, reviewers include the respective ID (Zbl) to enable direct access. 
-These in-review citations, along with the sentence in which they are cited, reveal the relationship between two mathematical papers.
-A reviewer may cite a prior paper to highlight a method, a motivation, or a result to name a few. 
-Figure~\ref{fig:exampleSILVER} shows an example of a seed BRE with its in-review citations as recommendations.
-We identify two descriptive terms, \textit{generalizes} and \textit{answer}, as aspects that indicate distinct relationships between the recommendations and the seed paper. 
-As of October 2025, zbMATH Open contains 812,241 BREs with 1,286,410 in-review citations that can be used to extract and study aspect similarity in mathematics on a scale.
+In zbMATH Open, reviewers often cite other works directly within the review texts they write (in-review citations).
+A reviewer may cite a prior paper to highlight an important connection in a method, a shared motivation, or a result, among other reasons.
+We consider these in-review citations as weak signals for recommendations.
+Since recommendations in \textbf{GoldRiM} also show strong citation overlap, it is reasonable to treat in-review citations as recommendations.
+When the cited works exist in zbMATH Open, reviewers include the respective ID (Zbl) to enable direct access.
+These in-review citations, along with the sentences in which they appear, reveal the relationship between the citing and cited works, similar to the aspects identified in \textbf{GoldRiM}.
+This helps us uncover additional aspects through which recommendations in mathematics may be related.
+Figure~\ref{fig:exampleSILVER} shows an example zbMATH Open seed BRE with its in-review citations as potential recommendations.
+The two aspects, \textit{generalizes} and \textit{answer}, in the example indicate distinct relationships between the recommendations and the seed paper.
 
-
-Manual annotation of aspects across millions of BREs is infeasible. 
-Therefore, we employ an LLM-based approach to automatically extract aspects from in-review citations.
+As of October 2025, zbMATH Open contains 812,241 BREs with 1,286,410 in-review citations.
+Manual extraction of in-review citations and their aspects across millions of BREs is infeasible.
+Considering that obtaining a single review in zbMATH Open already requires several months\footnote{\url{https://zbmath.org/about/\#:~:text=Indexing\%20decisions\%22.-,Reviewing,-Published\%20items\%20are}}.
+We expect a similar amount of time for manually constructing recommendations and aspects, as both require comparable expertise.
+Therefore, we employ an LLM-based approach to automatically extract such relationships.
 To obtain aspects, we utilize Qwen2.5-14B~\cite{qwen2025qwen25technicalreport} as it's the best-performing~\cite{koloveas2025can} few-shot model in the citation-intent prediction task on the SciCite~\cite{cohan2019structural} and ACL-LRC~\cite{Jurgens2018ACLARC} datasets.
-On both datasets, Qwen2.5-14B was able to identify aspects such as \textit{Background}, \textit{Method}, or \textit{Result} with the highest accuracy among instruction LLMs.
-Although LLM-based annotations are not as accurate as human annotations, annotations with prompts produce human-annotated like data if not better than~\cite{horych-etal-2025-promises,tan-etal-2024-large}.
-Our objective here is not to evaluate the LLM, but to leverage it to efficiently generate weakly supervised aspects.
-This enables us to have a large-scale dataset with aspects that can serve as a foundation for kickstarting aspect similarity research in the mathematics domain.
-Considering even obtaining a single review at zbMATH Open requires months of time\footnote{\url{https://zbmath.org/about/\#:~:text=Indexing\%20decisions\%22.-,Reviewing,-Published\%20items\%20are}}, we expect a similar time for gathering recommendations if constructed manually.
-% By utilizing an LLM-based solution, we eliminate these time-consuming efforts and achieve as accurate aspect labels as possible, enabling us to understand connections in BREs from a mathematical perspective.
+On both datasets, Qwen2.5-14B was able to identify the relationship, such as \textit{Background}, \textit{Method}, or \textit{Result}, in which research papers are similar, with the highest accuracy among instruction LLMs.
+Although LLM-based extractions are not as accurate as humans, annotations with prompts such as phrase extraction produce human-annotated-like data if not better than humans~\cite{horych-etal-2025-promises,tan-etal-2024-large}.
+Our objective here is not to evaluate the LLM, but to leverage it to efficiently generate weakly supervised relationships to understand how recommendations in mathematics are connected.
+This allows us to construct a large-scale dataset with aspect-level explanations for recommendations.
 
 We designed a concise few-shot prompt (Appendix~\ref{Appendix:prompt}) with three examples, as prior work indicates that larger prompts (e.g., 10 examples) reduce accuracy~\cite{koloveas2025can}. 
-The model is asked to assign aspects in JSON format, enabling structured outputs even when multiple citations appear within a single review.
-We passed 812,241 BREs through Qwen2.5-14B using the designed prompt and asked it to get mentioned Zbl citation along with the aspect.
-It worked correctly for 795,871 BREs, and for others gave either erroneous JSON, or no aspect or invalid Zbl.  
-It assigned 978,238 unique aspects (including stop words is considered as a different aspect\footnote{counted considering "Extends" and "Extends to" as a separate aspect.}) for 1,031,239 BRE pairs.
+The model is asked to relationship in JSON format, enabling structured outputs even when multiple citations appear within a single review.
+We passed 812,241 BREs through Qwen2.5-14B using the designed prompt and asked it to get the mentioned Zbl citation along with the aspect.
+It worked correctly for 795,871 BREs, and for others, it gave either erroneous JSON, no aspect, or an invalid Zbl.  
+It assigned 978,238 unique relationships (including stop words) as a different aspect\footnote{counted considering \textit{Extends} and \textit{Extends to} as a separate relationship.}) for 1,031,239 BRE pairs.
 We apply the following quality check steps to obtain the final set of aspects.
 First, \textbf{Normalization}, in which we stem and lemmatize extracted aspects using the Porter Stemmer, reducing them to a consistent set of 10,728 base forms.
 For example, \textit{introduce}, \textit{introduced}, \textit{introduces}, \textit{introducing} becomes \textit{introduce}.
-Second, \textbf{Filtering}, we manually inspected the normalized aspects having less than 1000 BREs to remove aspects that did not make sense due to probable LLM errors or absence of potential single word aspect in the review. 
-% We identified such aspects by checking those with the fewest BREs and then eliminating them.
-Such aspects include \textit{due}, \textit{first}, \textit{conference}, \textit{see}, \textit{roll}, etc. 
-This step leaves us with 919,655 recommendations with 7,241 aspects for 745,264 BREs.
-% Third, \textbf{Unification} using word vectors, where we unified aspects that could be categorized together, such as \textit{inspir} and \textit{motiv} to \textit{motiv}, \textit{extend} and \textit{extens} to \textit{extend}, etc.
-% Ultimately, we are left with 398 aspects. 
-The top 20 aspects and their frequencies are shown in Figure~\ref{fig:SilverRIMwordFreq}, and their short description devised based on examples is in Appendix Table~\ref{tab:silverrim_aspects}.
-The aspect with most BREs, i.e, \textit{collect} represents\footnote{For example, \url{https://zbmath.org/1557.90300} mentions a reference to a conference collection \url{https://zbmath.org/1531.93014} at zbMATH Open} collection of lecture notes or conference proceedings like entry at zbMATH Open.
-Many of the top 20 aspects appear across multiple papers, indicating that relationships are shared, which helps us identify common patterns of connections in mathematics.
-In Table~\ref{tab:dataset_characteristics}, we report characteristics of the resulting SilverRiM dataset.
-Dataset and its construction steps are freely available\footnote{\url{https://anonymous.4open.science/r/Aspect-Similarity-Math-BRE-Recsys-8098/}\label{gitlink}}. 
+Second, \textbf{Filtering}, we manually inspected the normalized relationships having less than 1000 BREs to remove those that did not make sense due to probable LLM errors or absence of a potential single-word aspect in the review. 
+Such relationships include \textit{due}, \textit{first}, \textit{conference}, \textit{see}, \textit{roll}, etc. 
+This step yields 919,655 recommendations with 7,241 aspects for 745,264 BREs.
 
-Thus, SilverRiM is the first dataset with aspects from BREs in mathematics, giving us unique aspects in which math BREs are similar.
-However, a question remains: Do reviewers actually conceptualize recommendations using the aspects found in SilverRiM if they were given the task of giving recommendations, or are there additional aspects we have missed? 
-This motivates the creation of an expert-validated evaluation dataset.
+The top 20 aspects and their frequencies are shown in Figure~\ref{fig:SilverRIMwordFreq}, and their short description devised based on examples is in Appendix Table~\ref{tab:silverrim_aspects}.
+The aspect with the most BREs, i.e., \textit{collect} represents\footnote{For example, \url{https://zbmath.org/1557.90300} mentions a reference to a conference collection \url{https://zbmath.org/1531.93014} at zbMATH Open.} a collection of lecture notes or conference proceedings, such as an entry at zbMATH Open.
+The aspects are shared across many papers, which shows that common patterns of connections exist in recommendations.
+Four of the \textbf{GoldRiM} aspects: \textit{Motiv}, \textit{Case}, \textit{Extend}, and \textit{Compare} also appear in \textbf{SilverRiM}, confirming the reliability of the LLM-based aspects extraction.
+Three aspects: \textit{Applic}, \textit{Alternativ}, and \textit{Specialize} are unique to \textbf{GoldRiM}, suggesting finer-grained distinctions made by the expert reviewer that were not captured in \textbf{SilverRiM}.
+However, these distinctions are related to similar categories in \textbf{SilverRiM}.
+For example, the \textit{Alternativ} aspect in \textbf{GoldRiM}, which captures relationships between studies offering alternative approaches, is conceptually close to the \textit{studi} aspect in \textbf{SilverRiM}, where the reviewer expresses it as “study.”
+We retain these distinctions for future qualitative analyses, as they may be useful in differentiating types of similarity. 
+The additional aspects identified in \textbf{SilverRiM} confirm our understanding from \textbf{GoldRiM} that mathematical recommendations are connected through distinct aspects.
+Moreover, they expand the number of identified aspects, revealing additional discrete ways in which recommendations are connected—through theoretical, logical, and conceptual relationships rather than simple textual or formulaic similarity.
+These relationships allow us to model recommendations as being linked through multiple types of aspects.
+Dataset characteristics are summarized in Table~\ref{tab:dataset_characteristics}, and the construction steps are freely available\footnote{\url{https://anonymous.4open.science/r/Aspect-Similarity-Math-BRE-Recsys-8098/}\label{gitlink}}. 
 
 \begin{figure}
     \centering
@@ -324,38 +367,13 @@ This motivates the creation of an expert-validated evaluation dataset.
 \hline
 \textbf{Characteristic} & \textbf{GoldRIM} & \textbf{SilverRIM} \\
 \hline
-Total BRE Seeds & 40 & 745,264 \\
-BRE Pairs (Recommendations) & 147 & 919,655 \\
-Unique aspects & 7 & 7,241 \\
-Recommendations per Seed & 3.67 & 1.23 \\
+Total BRE Seeds & 80 & 745,264 \\
+BRE Pairs (Recommendations) & 420 & 919,655 \\
+Unique aspects & 7(100 pairs) & 7,241 \\
+Recommendations per Seed & 5.25 & 1.23 \\
 \hline
 \end{tabular}
 \end{table}
-
-
-
-\subsection{GoldRiM}
-
-While SilverRiM offers large-scale coverage, GoldRiM aims to validate and enrich the extracted aspects through additional expert insight. 
-Expert annotation is crucial for determining whether the automatically derived aspects from SilverRiM accurately reflect mathematical reasoning or if important categories are being overlooked.
-Expert annotation is a resource-intensive process that requires domain expertise.
-To obtain this level of expert knowledge, we turned to zbMATH open reviewers, who review mathematical publications in their area of research.
-We identified active reviewers who had reviewed papers included in SilverRiM and who continue to serve as reviewers for zbMATH open.
-One expert reviewer agreed to annotate a sample of 40 seed BREs.
-We then randomly selected 40 BREs from SilverRiM belonging to the expert reviewer's research area and asked them to provide recommendations with aspects by following two steps.
-First, they were asked to provide recommendations that they would like to read next after seeing each of the 40 seed BREs.
-Second, for each identified recommendation, they must assign a category that would explain in what aspect the selected recommendation and seed BREs are connected.
-The expert reviewer provided us with 147 recommendations and 7 aspects.
-The expert reviewer pointed out that they did not initially agree with the category and often revisited and merged categories based on their expertise, which accurately represented the connection. 
-A brief description of each of the seven aspects is provided in Table~\ref{tab:goldrim_aspects}.
-Table~\ref{tab:aspects} shows aspects identified in the GoldRiM dataset.
-Four of these aspects: \textit{Motiv}, \textit{Case}, \textit{Extend}, and \textit{Compare} also appear in SilverRiM, confirming the reliability of the LLM-based extraction. 
-Three additional aspects: \textit{Applic}, \textit{Alternativ}, and \textit{Specialize} are unique to GoldRiM, suggesting finer-grained distinctions used by the expert reviewer.
-These distinctions are related to categories from SilverRiM.
-For example, the \textit{Alternativ} aspect in GoldRiM captures a relationship between studies offering alternative approaches, which might have been broadly categorized as \textit{studi} in SilverRiM. 
-We retain these distinctions for future qualitative analyses, as they may prove meaningful in separating similarity type. 
-Dataset characteristics are summarized in Table~\ref{tab:dataset_characteristics}. 
-The Dataset and its construction steps are freely available\textsuperscript{\ref{gitlink}}.
 
 \subsection{RQ1 discussion}
 
@@ -363,36 +381,46 @@ The Dataset and its construction steps are freely available\textsuperscript{\ref
 \centering
 \caption{Categorizations of aspects in previous works vs our curated math-specific work.}
 \label{tab:aspects}
-\begin{tabular}{llll}
+\begin{tabular}{lll}
 \hline
-constructed using & Dataset & Categorization of aspects & \# of doc pairs\\
+Dataset & Categorization of aspects & \# of doc pairs\\
 %add lable extraction manual or artificial using tools?
 \hline
-full-paper and citations & Modified AAN~\cite{chakraborty2016ferosa} & Background, Alternative Approaches, Methods, Comparison & 61,051\\
-full-paper and citations & PICO~\cite{jain2018PICObiomed} & Population, Interventions, Outcomes & 41,000\\
-full-paper and citations & CSCW~\cite{chan2018solventCSCW} & Background, Purpose, Mechanism, Findings & 1225\\
-full-paper and citations & Papers with code~\cite{Ostendorff2022a} & Task, Dataset, Result & 1,570,235\\
+Modified AAN~\cite{chakraborty2016ferosa} & Background, Alternative Approaches, Methods, Comparison & 61,051\\
+PICO~\cite{jain2018PICObiomed} & Population, Interventions, Outcomes & 41,000\\
+CSCW~\cite{chan2018solventCSCW} & Background, Purpose, Mechanism, Findings & 1225\\
+Papers with code~\cite{Ostendorff2022a} & Task, Dataset, Result & 1,570,235\\
+Modified ACL~\cite{kobayashi2018ACL} & Objective, Method, Result & 34,760\\
+ACL-ARC~\cite{Jurgens2018ACLARC} & Background, Method, Result & 1,941\\
+SciCite~\cite{cohan2019structural} & Background, Method, Result & 11,020\\
 \hline
-Citations & Modified ACL~\cite{kobayashi2018ACL} & Objective, Method, Result & 34,760\\
-Citations & ACL-ARC~\cite{Jurgens2018ACLARC} & Background, Method, Result & 1,941\\
-Citations & SciCite~\cite{cohan2019structural} & Background, Method, Result & 11,020\\
-\hline
-Citations (Ours) & GoldRIM & Extend, Case, Applic, Alternativ, Motiv, Specialize, Compare & 147\\
-Citations (Ours)& SilverRIM & Collec, Result,  Gener, Introduc, Extend, prove, review, and 7,232 other & 89,786\\
+GoldRiM (Ours)& Extend, Case, Applic, Alternativ, Motiv, Specialize, Compare & 7,241\\
+SilverRiM (Ours)& Collec, Result,  Gener, Introduc, Extend, prove, review, and 7,232 other & 89,786\\
 \hline
 \end{tabular}
 \end{table*}
 
-Table~\ref{tab:aspects} compares our identified and established mathematics-specific aspects with those in previous studies on aspect similarity used for recommendations.
-Existing datasets mainly include broad categories such as \textit{Background}, \textit{Method}, and \textit{Result}, which are typically derived from the sections of research papers where citations occur. 
-However, this section-based grounded aspects provides only a rough indication of research article similarity. 
-It does not reveal the actual reason or aspect behind the connection, whether the cited work is being mentioned for context, actually used as a method, extended, compared, improved upon, etc.
-In contrast, our datasets SilverRiM and GoldRiM capture mathematics-specific conceptual aspects such as \textit{Extend}, \textit{Motiv}, \textit{Compare}, etc. 
-These aspects are more specific, domain-dependent, explanatory than based on section mentions as seen in the existing datasets. 
-This distinction highlights that mathematical research relationships are defined less by empirical evidence or datasets and more by logical, structural, and conceptual reasoning among problems, proofs, and methods.
-These findings directly address RQ1, showing that aspect-based similarities in mathematics differ significantly from those observed in other scientific domains.
-The identified aspects reveal that mathematical works are connected through theoretical development and conceptual relationships unique from other domains that are represented in existing datasets.
-This domain-specific nature underlines the importance of our newly established datasets for advancing research on aspect-based similarity in mathematics.
+To address RQ1, we established the \textbf{GoldRiM} and \textbf{SilverRiM} datasets, demonstrating that recommendations in mathematics are connected by aspect-level conceptual relationships rather than surface-level similarity.
+Furthermore, identifying such aspects is difficult to judge based on the surface information available in zbMATH Open; one must understand their conceptual relationships or consult the full text, which might not be available for many zbMATH Open BREs.
+Aspect-based similarity of research papers for recommendation has been studied before~\cite{Ostendorff2022a,chakraborty2016ferosa,cohan2019structural}.
+However, such studies have not focused on mathematical aspects, but rather on fields like computer science, biomedical research, and mixed-domain research papers, often excluding mathematics papers.
+In Table~\ref{tab:aspects}, we compare our identified and established mathematics-specific aspects with those used in previous studies on aspect-based similarity for recommendations.
+There are several shared aspects between our work and existing studies, including \textit{Results}, \textit{Alternative Approaches}, and \textit{Comparisons}.
+Some aspects may appear synonymous, for example, (\textit{Background} in existing work vs. \textit{Compare} in ours), but they differ in what each aspect represents and its underlying purpose.
+First, existing datasets primarily include broad categories typically derived from the sections of research papers where citations are found.
+However, such section-based aspects only provide a rough indication of research article similarity.
+They do not capture the actual reason or aspect behind the connection, whether the cited work is mentioned for context, used as a method, extended, compared, improved upon, or otherwise.
+In contrast, our aspects indicate whether a cited work is actually being used or relied upon, as interpreted by expert reviewers in mathematics.
+For example, our aspect \textit{Alternative Approach} refers to an alternative proof, analysis, or conjecture presented in a research paper, while in existing datasets, the corresponding aspect generally includes all related work mentions without specifying which one is directly applicable.
+Second, the aspects in \textbf{SilverRiM} and \textbf{GoldRiM} capture mathematics-specific conceptual relationships that are not present in existing datasets.
+For example, aspects such as \textit{Generalization}, \textit{Conjecture}, \textit{Theorem}, and \textit{Construct}, among others, identified in our datasets, are unique to mathematics and not present in previous studies.
+This allows us to identify 7,241 distinct aspects, scale enabled by the reviews in zbMATH Open.
+
+In summary, mathematics-based aspects are more specific, domain-dependent, and explanatory than section-based aspects seen in existing datasets.
+This distinction highlights that mathematical research relationships are defined less by empirical evidence or datasets and more by logical, structural, and conceptual reasoning across problems, proofs, and methods.
+These findings directly address RQ1, demonstrating that recommendations in mathematics are based on aspect similarity, which differs from the aspects observed in other research domains.
+The identified aspects reveal that mathematical works are connected through theoretical development and conceptual relationships unique to the discipline, unlike those represented in existing datasets.
+This domain-specific nature underscores the importance of our newly established datasets for advancing recommendations in mathematics.
 
 \section{RQ2: How do existing systems perform? and qualitative analysis}
 
@@ -403,6 +431,7 @@ For each aspect you need to train an embedding model, so it is infeasible to hav
 
 \section{Acknowledgments}
 
+We used AI models such as chatGPT, Claude, Perplexity AI to proofread, improve grammar and snetence clarity. EVery sentence in the resulting text is checked by the authors and citations are provided wherever available. We take full responsibility of the texts and results in this manuscript.
 %%
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
