@@ -29,6 +29,21 @@
     abstract = "We propose a method for learning disentangled representations of texts that code for distinct and complementary aspects, with the aim of affording efficient model transfer and interpretability. To induce disentangled embeddings, we propose an adversarial objective based on the (dis)similarity between triplets of documents with respect to specific aspects. Our motivating application is embedding biomedical abstracts describing clinical trials in a manner that disentangles the populations, interventions, and outcomes in a given trial. We show that our method learns representations that encode these clinically salient aspects, and that these can be effectively used to perform aspect-specific retrieval. We demonstrate that the approach generalizes beyond our motivating application in experiments on two multi-aspect review corpora."
 }
 
+@article{jaidka2019cl,
+  title={The cl-scisumm shared task 2018: Results and key insights},
+  author={Jaidka, Kokil and Yasunaga, Michihiro and Chandrasekaran, Muthu Kumar and Radev, Dragomir and Kan, Min-Yen},
+  journal={arXiv preprint arXiv:1909.00764},
+  year={2019}
+}
+
+@inproceedings{teufel2006automatic,
+  title={Automatic classification of citation function},
+  author={Teufel, Simone and Siddharthan, Advaith and Tidhar, Dan},
+  booktitle={Proceedings of the 2006 conference on empirical methods in natural language processing},
+  pages={103--110},
+  year={2006}
+}
+
 @inproceedings{kobayashi2018ACL,
 author = {Kobayashi, Yuta and Shimbo, Masashi and Matsumoto, Yuji},
 title = {Citation Recommendation Using Distributed Representation of Discourse Facets in Scientific Articles},
@@ -168,6 +183,109 @@ series = {JCDL '18}
  Zbl = {1436.13034}
 }
 
+@article{goodman1972seven,
+  title={Seven strictures on similarity},
+  author={Goodman, Nelson},
+  year={1972}
+}
+
+@inproceedings{bar2011reflective,
+  title={A reflective view on text similarity},
+  author={B{\"a}r, Daniel and Zesch, Torsten and Gurevych, Iryna},
+  booktitle={Proceedings of the International Conference Recent Advances in Natural Language Processing 2011},
+  pages={515--520},
+  year={2011}
+}
+
+@article{2025BaaiLitSurvey,
+  title={Scientific paper recommendation: A survey},
+  author={Bai, Xiaomei and Wang, Mengyang and Lee, Ivan and Yang, Zhuo and Kong, Xiangjie and Xia, Feng},
+  journal={Ieee Access},
+  volume={7},
+  pages={9324--9339},
+  year={2019},
+  publisher={IEEE}
+}
+
+@article{pinedo2025RSSurvey,
+  title={Recent Advances and Trends in Research Paper Recommender Systems: A Comprehensive Survey},
+  author={Pinedo, Iratxe and Larra{\~n}aga, Mikel and Arruarte, Ana},
+  journal={arXiv preprint arXiv:2508.08828},
+  year={2025}
+}
+
+@article{kreutz2022scientific,
+  title={Scientific paper recommendation systems: a literature review of recent publications},
+  author={Kreutz, Christin Katharina and Schenkel, Ralf},
+  journal={International journal on digital libraries},
+  volume={23},
+  number={4},
+  pages={335--369},
+  year={2022},
+  publisher={Springer}
+}
+
+@Article{2019BilmedRSFeng,
+author="Feng, Xiaoyue
+and Zhang, Hao
+and Ren, Yijie
+and Shang, Penghui
+and Zhu, Yi
+and Liang, Yanchun
+and Guan, Renchu
+and Xu, Dong",
+title="The Deep Learning--Based Recommender System ``Pubmender'' for Choosing a Biomedical Publication Venue: Development and Validation Study",
+journal="J Med Internet Res",
+year="2019",
+month="May",
+day="24",
+volume="21",
+number="5",
+pages="e12957",
+keywords="recommender system; deep learning; convolutional neural network; biomedical literature; PubMed",
+issn="1438-8871",
+doi="10.2196/12957",
+url="http://www.jmir.org/2019/5/e12957/",
+url="https://doi.org/10.2196/12957",
+url="http://www.ncbi.nlm.nih.gov/pubmed/31127715"
+}
+
+@article{2022KartRSBio,
+    author = {Kart, Özge and Mestiashvili, Alexandre and Lachmann, Kurt and Kwasnicki, Richard and Schroeder, Michael},
+    title = {Emati: a recommender system for biomedical literature based on supervised learning},
+    journal = {Database},
+    volume = {2022},
+    pages = {baac104},
+    year = {2022},
+    month = {12},
+    issn = {1758-0463},
+    doi = {10.1093/database/baac104},
+    url = {https://doi.org/10.1093/database/baac104},
+    eprint = {https://academic.oup.com/database/article-pdf/doi/10.1093/database/baac104/47779573/baac104.pdf},
+}
+
+@article{zhang2023scholarlyRSLitSur,
+  title={Scholarly recommendation systems: a literature survey},
+  author={Zhang, Zitong and Patra, Braja Gopal and Yaseen, Ashraf and Zhu, Jie and Sabharwal, Rachit and Roberts, Kirk and Cao, Tru and Wu, Hulin},
+  journal={Knowledge and Information Systems},
+  volume={65},
+  number={11},
+  pages={4433--4478},
+  year={2023},
+  publisher={Springer}
+}
+
+@article{beel2016RSSurvey,
+  title={Paper recommender systems: a literature survey},
+  author={Beel, Joeran and Gipp, Bela and Langer, Stefan and Breitinger, Corinna},
+  journal={International Journal on Digital Libraries},
+  volume={17},
+  number={4},
+  pages={305--338},
+  year={2016},
+  publisher={Springer}
+}
+
 @inproceedings{horych-etal-2025-promises,
     title = "The Promises and Pitfalls of {LLM} Annotations in Dataset Labeling: a Case Study on Media Bias Detection",
     author = "Horych, Tom{\'a}{\v{s}}  and
@@ -216,4 +334,224 @@ series = {JCDL '18}
     doi = "10.18653/v1/2024.emnlp-main.54",
     pages = "930--957",
     abstract = "Data annotation and synthesis generally refers to the labeling or generating of raw data with relevant information, which could be used for improving the efficacy of machine learning models. The process, however, is labor-intensive and costly. The emergence of advanced Large Language Models (LLMs), exemplified by GPT-4, presents an unprecedented opportunity to automate the complicated process of data annotation and synthesis. While existing surveys have extensively covered LLM architecture, training, and general applications, we uniquely focus on their specific utility for data annotation. This survey contributes to three core aspects: LLM-Based Annotation Generation, LLM-Generated Annotations Assessment, and LLM-Generated Annotations Utilization. Furthermore, this survey includes an in-depth taxonomy of data types that LLMs can annotate, a comprehensive review of learning strategies for models utilizing LLM-generated annotations, and a detailed discussion of the primary challenges and limitations associated with using LLMs for data annotation and synthesis. Serving as a key guide, this survey aims to assist researchers and practitioners in exploring the potential of the latest LLMs for data annotation, thereby fostering future advancements in this critical field."
+}
+
+@inproceedings{radev2009acl,
+  title={The ACL Anthology Network Corpus},
+  author={Radev, Dragomir and Muthukrishnan, Pradeep and Qazvinian, Vahed},
+  booktitle={Proceedings of the 2009 Workshop on Text and Citation Analysis for Scholarly Digital Libraries (NLPIR4DL)},
+  pages={54--61},
+  year={2009}
+}
+
+@inproceedings{councill2008parscit,
+  title={ParsCit: an Open-source CRF Reference String Parsing Package.},
+  author={Councill, Isaac G and Giles, C Lee and Kan, Min-Yen}
+}
+
+@article{starr2009origins,
+  title={The origins, evolution, and future of The Cochrane Database of Systematic Reviews},
+  author={Starr, Mark and Chalmers, Iain and Clarke, Mike and Oxman, Andrew D},
+  journal={International journal of technology assessment in health care},
+  volume={25},
+  number={S1},
+  pages={182--195},
+  year={2009},
+  publisher={Cambridge University Press}
+}
+
+@inproceedings{2020PapWitCodeData,
+    title = "{AxCell}: Automatic Extraction of Results from Machine Learning Papers",
+    author = "Kardas, Marcin  and
+      Czapla, Piotr  and
+      Stenetorp, Pontus  and
+      Ruder, Sebastian  and
+      Riedel, Sebastian  and
+      Taylor, Ross  and
+      Stojnic, Robert",
+    editor = "Webber, Bonnie  and
+      Cohn, Trevor  and
+      He, Yulan  and
+      Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.692/",
+    doi = "10.18653/v1/2020.emnlp-main.692",
+    pages = "8580--8594",
+    abstract = "Tracking progress in machine learning has become increasingly difficult with the recent explosion in the number of papers. In this paper, we present AxCell, an automatic machine learning pipeline for extracting results from papers. AxCell uses several novel components, including a table segmentation subtask, to learn relevant structural knowledge that aids extraction. When compared with existing methods, our approach significantly improves the state of the art for results extraction. We also release a structured, annotated dataset for training models for results extraction, and a dataset for evaluating the performance of models on this task. Lastly, we show the viability of our approach enables it to be used for semi-automated results extraction in production, suggesting our improvements make this task practically viable for the first time. Code is available on GitHub."
+}
+
+@inproceedings{bird2008acl,
+  title={The ACL Anthology Reference Corpus: A Reference Dataset for Bibliographic Research in Computational Linguistics.},
+  author={Bird, Steven and Dale, Robert and Dorr, Bonnie J and Gibson, Bryan R and Joseph, Mark Thomas and Kan, Min-Yen and Lee, Dongwon and Powley, Brett and Radev, Dragomir R and Tan, Yee Fan and others},
+  booktitle={LREC},
+  year={2008}
+}
+
+@inproceedings{2022multicite,
+    title = "{M}ulti{C}ite: Modeling realistic citations requires moving beyond the single-sentence single-label setting",
+    author = "Lauscher, Anne  and
+      Ko, Brandon  and
+      Kuehl, Bailey  and
+      Johnson, Sophie  and
+      Cohan, Arman  and
+      Jurgens, David  and
+      Lo, Kyle",
+    editor = "Carpuat, Marine  and
+      de Marneffe, Marie-Catherine  and
+      Meza Ruiz, Ivan Vladimir",
+    booktitle = "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jul,
+    year = "2022",
+    address = "Seattle, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.naacl-main.137/",
+    doi = "10.18653/v1/2022.naacl-main.137",
+    pages = "1875--1889",
+    abstract = "Citation context analysis (CCA) is an important task in natural language processing that studies how and why scholars discuss each others' work. Despite decades of study, computational methods for CCA have largely relied on overly-simplistic assumptions of how authors cite, which ignore several important phenomena. For instance, scholarly papers often contain rich discussions of cited work that span multiple sentences and express multiple intents concurrently. Yet, recent work in CCA is often approached as a single-sentence, single-label classification task, and thus many datasets used to develop modern computational approaches fail to capture this interesting discourse. To address this research gap, we highlight three understudied phenomena for CCA and release MULTICITE, a new dataset of 12.6K citation contexts from 1.2K computational linguistics papers that fully models these phenomena. Not only is it the largest collection of expert-annotated citation contexts to-date, MULTICITE contains multi-sentence, multi-label citation contexts annotated through-out entire full paper texts. We demonstrate how MULTICITE can enable the development of new computational methods on three important CCA tasks. We release our code and dataset at \url{https://github.com/allenai/multicite}."
+}
+
+@article{huang2020coda,
+  title={Coda-19: Using a non-expert crowd to annotate research aspects on 10,000+ abstracts in the covid-19 open research dataset},
+  author={Huang, Ting-Hao'Kenneth' and Huang, Chieh-Yang and Ding, Chien-Kuang Cornelia and Hsu, Yen-Chia and Giles, C Lee},
+  journal={arXiv preprint arXiv:2005.02367},
+  year={2020}
+}
+
+@inproceedings{mysore2021csfcube,
+    title={{CSFC}ube - A Test Collection of Computer Science Research Articles for Faceted Query by Example},
+    author={Sheshera Mysore and Tim O'Gorman and Andrew McCallum and Hamed Zamani},
+    booktitle={Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 2)},
+    year={2021},
+    url={https://openreview.net/forum?id=8Y50dBbmGU}
+}
+
+@inproceedings{lo-etal-2020-s2orc,
+    title = "{S}2{ORC}: The Semantic Scholar Open Research Corpus",
+    author = "Lo, Kyle  and
+      Wang, Lucy Lu  and
+      Neumann, Mark  and
+      Kinney, Rodney  and
+      Weld, Daniel",
+    editor = "Jurafsky, Dan  and
+      Chai, Joyce  and
+      Schluter, Natalie  and
+      Tetreault, Joel",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.447/",
+    doi = "10.18653/v1/2020.acl-main.447",
+    pages = "4969--4983",
+    abstract = "We introduce S2ORC, a large corpus of 81.1M English-language academic papers spanning many academic disciplines. The corpus consists of rich metadata, paper abstracts, resolved bibliographic references, as well as structured full text for 8.1M open access papers. Full text is annotated with automatically-detected inline mentions of citations, figures, and tables, each linked to their corresponding paper objects. In S2ORC, we aggregate papers from hundreds of academic publishers and digital archives into a unified source, and create the largest publicly-available collection of machine-readable academic text to date. We hope this resource will facilitate research and development of tools and tasks for text mining over academic text."
+}
+
+@inproceedings{qin-etal-2023-chatgpt,
+    title = "Is {C}hat{GPT} a General-Purpose Natural Language Processing Task Solver?",
+    author = "Qin, Chengwei  and
+      Zhang, Aston  and
+      Zhang, Zhuosheng  and
+      Chen, Jiaao  and
+      Yasunaga, Michihiro  and
+      Yang, Diyi",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.85/",
+    doi = "10.18653/v1/2023.emnlp-main.85",
+    pages = "1339--1384",
+    abstract = "Spurred by advancements in scale, large language models (LLMs) have demonstrated the ability to perform a variety of natural language processing (NLP) tasks zero-shot{---}i.e., without adaptation on downstream data. Recently, the debut of ChatGPT has drawn a great deal of attention from the natural language processing (NLP) community due to the fact that it can generate high-quality responses to human input and self-correct previous mistakes based on subsequent conversations. However, it is not yet known whether ChatGPT can serve as a generalist model that can perform many NLP tasks zero-shot. In this work, we empirically analyze the zero-shot learning ability of ChatGPT by evaluating it on 20 popular NLP datasets covering 7 representative task categories. With extensive empirical studies, we demonstrate both the effectiveness and limitations of the current version of ChatGPT. We find that ChatGPT performs well on many tasks favoring reasoning capabilities (e.g., arithmetic reasoning) while it still faces challenges when solving specific tasks such as sequence tagging. We additionally provide in-depth analysis through qualitative case studies."
+}
+
+@inproceedings{2023DorisMae,
+author = {Wang, Jianyou and Wang, Kaicheng and Wang, Xiaoyue and Naidu, Prudhviraj and Bergen, Leon and Paturi, Ramamohan},
+title = {DORIS-MAE: scientific document retrieval using multi-level aspect-based queries},
+year = {2023},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+abstract = {In scientific research, the ability to effectively retrieve relevant documents based on complex, multifaceted queries is critical. Existing evaluation datasets for this task are limited, primarily due to the high cost and effort required to annotate resources that effectively represent complex queries. To address this, we propose a novel task, Scientific DOcument Retrieval using Multi-level Aspect-based quEries (DORIS-MAE), which is designed to handle the complex nature of user queries in scientific research. We developed a benchmark dataset within the field of computer science, consisting of 100 human-authored complex query cases. For each complex query, we assembled a collection of 100 relevant documents and produced annotated relevance scores for ranking them. Recognizing the significant labor of expert annotation, we also introduce Anno-GPT, a scalable framework for validating the performance of Large Language Models (LLMs) on expert-level dataset annotation tasks. LLM annotation of the DORIS-MAE dataset resulted in a 500x reduction in cost, without compromising quality. Furthermore, due to the multi-tiered structure of these complex queries, the DORIS-MAE dataset can be extended to over 4,000 sub-query test cases without requiring additional annotation. We evaluated 17 recent retrieval methods on DORIS-MAE, observing notable performance drops compared to traditional datasets. This highlights the need for better approaches to handle complex, multifaceted queries in scientific research. Our dataset and codebase are available at https://github.com/Real-Doris-Mae/Doris-Mae-Dataset.},
+booktitle = {Proceedings of the 37th International Conference on Neural Information Processing Systems},
+articleno = {1668},
+numpages = {16},
+location = {New Orleans, LA, USA},
+series = {NIPS '23}
+}
+
+@inproceedings{2023aspectcse,
+    title = "{A}spect{CSE}: Sentence Embeddings for Aspect-Based Semantic Textual Similarity Using Contrastive Learning and Structured Knowledge",
+    author = "Schopf, Tim  and
+      Gerber, Emanuel  and
+      Ostendorff, Malte  and
+      Matthes, Florian",
+    editor = "Mitkov, Ruslan  and
+      Angelova, Galia",
+    booktitle = "Proceedings of the 14th International Conference on Recent Advances in Natural Language Processing",
+    month = sep,
+    year = "2023",
+    address = "Varna, Bulgaria",
+    publisher = "INCOMA Ltd., Shoumen, Bulgaria",
+    url = "https://aclanthology.org/2023.ranlp-1.113/",
+    pages = "1054--1065",
+    abstract = "Generic sentence embeddings provide coarse-grained approximation of semantic textual similarity, but ignore specific aspects that make texts similar. Conversely, aspect-based sentence embeddings provide similarities between texts based on certain predefined aspects. Thus, similarity predictions of texts are more targeted to specific requirements and more easily explainable. In this paper, we present AspectCSE, an approach for aspect-based contrastive learning of sentence embeddings. Results indicate that AspectCSE achieves an average improvement of 3.97{\%} on information retrieval tasks across multiple aspects compared to the previous best results. We also propose the use of Wikidata knowledge graph properties to train models of multi-aspect sentence embeddings in which multiple specific aspects are simultaneously considered during similarity predictions. We demonstrate that multi-aspect embeddings outperform even single-aspect embeddings on aspect-specific information retrieval tasks. Finally, we examine the aspect-based sentence embedding space and demonstrate that embeddings of semantically similar aspect labels are often close, even without explicit similarity training between different aspect labels."
+}
+
+@inproceedings{2020OstendorffWiki,
+author = {Ostendorff, Malte and Ruas, Terry and Schubotz, Moritz and Rehm, Georg and Gipp, Bela},
+title = {Pairwise Multi-Class Document Classification for Semantic Relations between Wikipedia Articles},
+year = {2020},
+isbn = {9781450375856},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3383583.3398525},
+doi = {10.1145/3383583.3398525},
+abstract = {Many digital libraries recommend literature to their users considering the similarity between a query document and their repository. However, they often fail to distinguish what is the relationship that makes two documents alike. In this paper, we model the problem of finding the relationship between two documents as a pairwise document classification task. To find the semantic relation between documents, we apply a series of techniques, such as GloVe, Paragraph Vectors, BERT, and XLNet under different configurations (e.g., sequence length, vector concatenation scheme), including a Siamese architecture for the Transformer-based systems. We perform our experiments on a newly proposed dataset of 32,168 Wikipedia article pairs and Wikidata properties that define the semantic document relations. Our results show vanilla BERT as the best performing system with an F1-score of 0.93, which we manually examine to better understand its applicability to other domains. Our findings suggest that classifying semantic relations between documents is a solvable task and motivates the development of a recommender system based on the evaluated techniques. The discussions in this paper serve as first steps in the exploration of documents through SPARQL-like queries such that one could find documents that are similar in one aspect but dissimilar in another.},
+booktitle = {Proceedings of the ACM/IEEE Joint Conference on Digital Libraries in 2020},
+pages = {127–136},
+numpages = {10},
+keywords = {BERT, Siamese networks, Wikipedia, XLNet, document classification, document similarity, recommender systems, transformers},
+location = {Virtual Event, China},
+series = {JCDL '20}
+}
+
+@article{2025AspectCodes,
+author = {Long, Kehan and Li, Shasha and Tang, Jintao and Wang, Ting},
+title = {Leveraging multiple control codes for aspect-controllable related paper recommendation},
+year = {2025},
+issue_date = {Jan 2025},
+publisher = {Pergamon Press, Inc.},
+address = {USA},
+volume = {62},
+number = {1},
+issn = {0306-4573},
+url = {https://doi.org/10.1016/j.ipm.2024.103879},
+doi = {10.1016/j.ipm.2024.103879},
+journal = {Inf. Process. Manage.},
+month = jan,
+numpages = {19},
+keywords = {Related paper recommendation, Controllable recommendation, Multi-aspect representation, Scientific document encoding, Control codes}
+}
+
+@article{2025ZhangCiteIntentSurvey,
+title = {Deep learning meets bibliometrics: A survey of citation function classification},
+journal = {Journal of Informetrics},
+volume = {19},
+number = {1},
+pages = {101608},
+year = {2025},
+issn = {1751-1577},
+doi = {https://doi.org/10.1016/j.joi.2024.101608},
+url = {https://www.sciencedirect.com/science/article/pii/S1751157724001202},
+author = {Yang Zhang and Yufei Wang and Quan Z. Sheng and Lina Yao and Haihua Chen and Kai Wang and Adnan Mahmood and Wei Emma Zhang and Munazza Zaib and Subhash Sagar and Rongying Zhao},
+keywords = {Citation function, Deep learning, Bibliometrics, Pretrained language model},
+abstract = {With the advent and progression of Natural Language Processing (NLP) methodologies, the domain of automatic citation function classification has gained popularity and considerable research efforts have been contributed to this task. Automatic citation function classification has a joint computational linguistic and bibliometrics background. However, due to the different expertise in both fields, there is rarely a comprehensive and unified analysis of this task. We provide a detailed and nuanced examination analysis of the evolution of citation function classification task from the dimensions of citation function annotation schemes, widely employed benchmarks, and computational models. We first present the origins and the development of the citation function classification task. From the perspective of multi-disciplinary integration, we then discuss how bibliometrics and NLP can be better combined to contribute to the citation function classification task. Finally, based on the deficiencies that we have found in the task, we suggest some promising prospects in both bibliometrics and NLP to be investigated.}
 }
