@@ -1,49 +1,41 @@
-# Repository is for SIGIR Submission "Aspect-Aware Content-Based Recommendations for Mathematical Research Papers"
+# SIGIR'26 submission code repository for paper titled "Aspect-Aware Content-Based Recommendations for Mathematical Research Papers"
 
-## Important step to Obtain data and Reproducible results
+## Quick Start
 
-- Create a virtual environment
+### 1. Environment Setup
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-- Install requirements from requirements.txt
+### 2. Load Datasets
 
-Now you are ready to obtain the data and reproduce results
+Follow the instructions in the data folder to obtain and load the SilverRiM and GoldRiM datasets
 
-## Loading Datasets
+## Data
 
-The steps to obtain datasets are provided in detaild 
-[Data](#data) : Contains SilverRiM and GoldRiM dataset, steps on how to obtain them and required scripts.
+This repository includes scripts to obtain and prepare two datasets:
+- **SilverRiM**: Automatically generated aspect-aware recommendations
+- **GoldRiM**: Gold standard manually curated recommendations
 
-Load the dataset using steps in "data/"
+See `data/README.md` for detailed setup instructions and dataset descriptions.
 
 ## Reproducing Results
 
-### Figure 3
-python src/data_stats/n_gram_ovelap.py
+All results from the paper can be reproduced using the scripts below:
 
-### Figure 4
-python src/data_stats/cosScores_ovelap.py
-(currently, this includes already generated scores, to get the actual scores, you will have to run src/eval/createIndexes.py)
+| Figure/Table | Script | Description |
+|---|---|---|
+| **Figure 3** | `python src/data_stats/n_gram_overlap.py` | N-gram overlap analysis |
+| **Figure 4** | `python src/data_stats/cosScores_overlap.py` | Cosine similarity scores (pre-computed; run `src/eval/createIndexes.py` for fresh scores) |
+| **Figure 5** | — | Demonstration only (created in PowerPoint) |
+| **Figure 6** | — | Demonstration only (created in PowerPoint) |
+| **Table 1** | `python src/data_stats/print_data_stats.py` | Dataset statistics (requires loaded dataframes from `data/`) |
+| **Table 2** | `bash src/get_eval_goldRiM_silverRiM.sh` | GoldRiM vs SilverRiM evaluation |
+| **Table 3** | `bash src/get_eval_pwc.sh` | Papers with Code evaluation |
+| **Figures 7–8** | `bash src/ablation_.sh` | Ablation study results |
 
-### Figure 5
-(for demonstration only, created using powepoint)
+## License
 
-### Figure 6
-(for demonstration only, created using powepoint)
-
-### Table 1
-assuming if you have already loaded dataframe from "data/"
-python src/data_stats/print_data_stats.py
-
-### Table 2
-src/get_eval_goldRiM_silverRiM.sh
-
-### Table 3
-src/get_eval_pwc.sh
-
-### Figure 7
-
-### Figure 8
-
-## License 
-
-CC-BY-SA 4.0. This defines the license for the whole dataset, which also contains non-copyrighted bibliographic metadata and reference data derived from I4OSC (CC0).
+CC-BY-SA 4.0. The dataset includes non-copyrighted bibliographic metadata and reference data derived from I4OSC (CC0).
