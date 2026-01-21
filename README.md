@@ -1,8 +1,8 @@
-# SIGIR'26 submission code repository for paper titled "Aspect-Aware Content-Based Recommendations for Mathematical Research Papers"
+# SIGIR'26 submission repository for paper titled "Aspect-Aware Content-Based Recommendations for Mathematical Research Papers"
 
-## Quick Start
+## Environment setup
 
-### 1. Environment Setup
+### 1. Requirements
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
