@@ -6,7 +6,8 @@ This directory contains the extra plots referenced in the paper.
 
 ### Section 4.4.1 — Aspect Removal Ablation
 
-- **Normalized performance drop under aspect removal**:  
+- **Normalized performance drop under aspect removal**:
+  This plot normalized the Recall@10 performance drop with respect to the affected removed size from the training data. The last row only modified the data and as such was not further altered.
   `achgnn_normalized_aspect_removal.pdf`
 
 ### Section 4.4.3 — Neighborhood Size and GNN Depth Ablation
