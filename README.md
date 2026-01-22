@@ -1,5 +1,9 @@
 # SIGIR'26 submission repository for paper titled "Aspect-Aware Content-Based Recommendations for Mathematical Research Papers"
 
+### Extra plots Referenced in the Paper
+
+All extra plots referenced in the paper are available in the `plots_/` directory of this repository.
+
 ## Environment setup
 
 ### 1. Requirements

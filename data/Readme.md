@@ -62,6 +62,12 @@ silver_pairs = df[df["SilverRiM"] == 1][
 print(f"SilverRiM pairs: {len(silver_pairs)}")
 ```
 
+## Viewing dataset Aspect and Aspect-labels
+
+```
+python view_aspect_labels.py
+```
+
 ---
 
 ## Viewing Documents on zbMATH Open
