@@ -16,6 +16,8 @@ Both datasets are based on **zbMATH Open document identifiers (docIDs)**.
 All documents can be accessed directly on zbMATH Open by adding the identifier as suffix to `https://zbmath.org/<identifier>`.
 As an example from Figure 1 in the paper: https://zbmath.org/0940.14001 .
 
+In addition, [RelatedDatasets.md] provides an overview table to related datasets which didn't make it into the paper.
+
 ## Dataset Access
 
 The GoldRiM and SilverRiM datasets are provided as **docID pairs** in a single CSV file (39.4MB).
