@@ -4,22 +4,19 @@
 
 All extra plots referenced in the paper are available in the `plots_/` directory of this repository.
 
-## Environment setup
+## Source Code
 
-### 1. Requirements
+All source code is available in `src`. Any experiments, scripts, or other attempts to reproduce the data require to load the python virtual environment below.
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Load Datasets
-
-Follow the instructions in the data folder to obtain and load the SilverRiM and GoldRiM datasets
-
 ## Data
 
-This repository includes scripts to obtain and prepare two datasets:
+This repository includes scripts to obtain and prepare the two datasets:
 - **SilverRiM**: Automatically generated aspect-aware recommendations
 - **GoldRiM**: Gold standard manually curated recommendations
 
