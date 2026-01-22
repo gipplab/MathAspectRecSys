@@ -3,6 +3,7 @@
 ### Extra plots Referenced in the Paper
 
 All extra plots referenced in the paper are available in the `plots_/` directory of this repository.
+All data is available in the `data/` directory, including a comparison table to related datasets.
 
 ## Source Code
 
