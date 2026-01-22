@@ -16,16 +16,12 @@ Both datasets are based on **zbMATH Open document identifiers (docIDs)**.
 All documents can be accessed directly on zbMATH Open by adding the identifier as suffix to `https://zbmath.org/<identifier>`.
 As an example from Figure 1 in the paper: https://zbmath.org/0940.14001 .
 
----
-
 ## Dataset Access
 
 The GoldRiM and SilverRiM datasets are provided as **docID pairs** in a single CSV file (39.4MB).
 
 📥 **Download dataset:**
 https://drive.google.com/file/d/1npaipBwA606KAUKmxikjZjvjj3VMQV0Q/view?usp=sharing
-
----
 
 ## Dataset Structure
 
@@ -43,11 +39,12 @@ The recommendation dataset CSV contains the following columns:
 
 Please refer to "aspect_description.md" for Aspect description and examples.
 
----
+## Loading the Dataset in Python
 
-## Loading the Dataset
+The easiest way to load the data pairs is using `pandas`.
 
-```import pandas as pd
+```python
+import pandas as pd
 
 df = pd.read_csv("mathRec_dataset.csv") #downloaded file using the link above
 
@@ -64,53 +61,37 @@ silver_pairs = df[df["SilverRiM"] == 1][
 print(f"SilverRiM pairs: {len(silver_pairs)}")
 ```
 
-## Viewing dataset Aspect and Aspect-labels
+To print the list of aspects and aspect-labels, you can use `view_aspect_labels.py`:
 
-```
+```sh
 python view_aspect_labels.py
 ```
 
----
+## Example
 
-## Viewing Documents on zbMATH Open
+Below is an example of a seed–recommendation pair from SilverRiM with clickable links to zbMATH Open:
 
-To view a document associated with a zbMATH Open docID, replace `docID` in the following URL with the actual identifier:
-
-```
-https://zbmath.org/docID
-```
-
-
-### Example
-
-Below is an example of a seed–recommendation pair with clickable links to zbMATH Open:
-
-| Seed Document | Recommended Document |
-|--------------|----------------------|
-| [1411.65167](https://zbmath.org/1411.65167) | [1202.65168](https://zbmath.org/1202.65168) |
+| Seed Document | Recommended Document | Aspect | Aspect-Label | GoldRiM | SilverRiM | Recommendation Title |
+|--------------|----------------------|---|---|---|---|---|
+| [1411.65167](https://zbmath.org/1411.65167) | [1202.65168](https://zbmath.org/1202.65168) | Specialization / Restriction | Focused study of a constrained version of the problem | 0 | 1 | Two-dimensional triangular functions and their applications to nonlinear 2D Volterra-Fredholm integral equations |
 
 Clicking the links opens the corresponding documents on the **zbMATH Open website**.
 
 
----
+# Add Metadata to Recommendations
 
-# Viewing Dataset Contents Offline
-
-To enable **offline access** to document contents, we first download the complete zbMATH Open corpus using the **zbMATH Open API**, store it locally in a CSV file, and then extract the documents required for GoldRiM and SilverRiM.
+In order to download metadata of the recommendations (or any other zbMATH Open document, for that matter), you can use `zbMATHDocsData.py`. This script either requests a document ID or a CSV file (with `Recommendation` column) and downloads additional metadata for the IDs present in that column.
+To do so, it requests the data via the official API:
 
 🔗 **zbMATH Open API:** https://api.zbmath.org/v1/
 
----
+In order to fetch data from a file, uncomment and adjust lines 72 and 73. Then run:
 
-## Step 1: Download zbMATH Open Documents
-
-To download all zbMATH Open documents into a single CSV file, run:
-
-```
+```sh
 python zbMATHDocsData.py
 ```
 
-📄 **produces a csv File:** `zbMATHDocsData.csv` containing:
+📄 **This produces a csv File:** `zbMATHDocsData.csv` containing:
 
 | Column | Description |
 |--------|-------------|
@@ -128,9 +109,9 @@ python zbMATHDocsData.py
 |-------------|------|-------|------|------|------|
 | [745.30048](https://zbmath.org/745.30048) | Let D be a g-holed planar domain with . . .  | The geometry of representing measures and their critical values. |  {30H05: Spaces of bounded analytic functions of one complex variable , 46J10: Banach algebras of continuous functions, function algebras,  14H42: Theta functions and curves; Schottky problem} | (measures; critical values; theta functions; Abel-Jacobi theory; multiply connected domains) |  |
 
-### **Step 2: Extract Content for GoldRiM & SilverRiM**
+### **Step 2: Add Metadata to GoldRiM & SilverRiM**
 
-Once `zbMATHDocsData.csv` is available, use it to extract documents associated with docIDs in the recommendation datasets.
+Once `zbMATHDocsData.csv` is available, use it to add metadata to the correct docIDs in the recommendation datasets.
 
 **Run the following command:**
 ```sh
