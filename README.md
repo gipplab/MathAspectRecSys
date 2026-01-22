@@ -31,8 +31,6 @@ All results from the paper can be reproduced using the scripts below:
 |---|---|---|
 | **Figure 3** | `python src/data_stats/n_gram_overlap.py` | N-gram overlap analysis |
 | **Figure 4** | `python src/data_stats/cosScores_overlap.py` | Cosine similarity scores (pre-computed; run `src/eval/createIndexes.py` for fresh scores) |
-| **Figure 5** | — | Demonstration only (created in PowerPoint) |
-| **Figure 6** | — | Demonstration only (created in PowerPoint) |
 | **Table 1** | `python src/data_stats/print_data_stats.py` | Dataset statistics (requires loaded dataframes from `data/`) |
 | **Table 2** | `bash src/get_eval_goldRiM_silverRiM.sh` | GoldRiM vs SilverRiM evaluation |
 | **Table 3** | `bash src/get_eval_pwc.sh` | Papers with Code evaluation |
