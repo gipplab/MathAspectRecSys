@@ -85,7 +85,7 @@ python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateu
 pytz==2025.1
 PyYAML==6.0.2
 regex==2025.9.1
-requests==2.32.3
+requests==2.33.0
 rich==14.1.0
 rsa==4.9.1
 safetensors==0.5.3
