@@ -8,8 +8,7 @@
 ## :rocket: Accepted to the Full Papers Track of SIGIR 2026
 
 ## Abstract
-<hr>
-This repository contains an aspect-aware content-based research paper recommendation system code and dataset designed specifically for mathematics, where relatedness is often conceptual rather than based on textual similarity or citation overlap. Unlike existing approaches that work well in domains such as computer science or biomedicine, this project addresses the unique challenges of mathematical literature by modeling connections through shared proof techniques, logical implications, and theoretical generalizations. The project introduces GoldRiM and SilverRiM, the first datasets for aspect-aware mathematical paper recommendation, and presents AchGNN, an aspect-conditioned heterogeneous graph neural network that integrates textual semantics, citation networks, and author relationships. Experimental results show that AchGNN consistently outperforms prior recommendation methods across multiple aspects and also generalizes effectively to machine learning literature. The system has been deployed on the MaRDI platform ([An example document with recommendations](https://portal.mardi4nfdi.de/wiki/Publication:3361952)) to support mathematical research discovery.
+This repository contains an aspect-aware content-based research paper recommendation system code and dataset designed specifically for mathematics, where relatedness is often conceptual rather than based on textual similarity or citation overlap. Unlike existing approaches that work well in domains such as computer science or biomedicine, this project addresses the unique challenges of mathematical literature by modeling connections through shared proof techniques, logical implications, and theoretical generalizations. The project introduces GoldRiM and SilverRiM, the first datasets for aspect-aware mathematical paper recommendation, and presents AchGNN, an aspect-conditioned heterogeneous graph neural network that integrates textual semantics, citation networks, and author relationships. Experimental results show that AchGNN consistently outperforms prior recommendation methods across multiple aspects and also generalizes effectively to machine learning literature. The system has been deployed on the MaRDI platform [An example document with recommendations](https://portal.mardi4nfdi.de/wiki/Publication:3361952) to support mathematical research discovery.
 
 This repository includes the complete source code (`src`), datasets (`data`), and supplementary materials (`material`).
 
@@ -52,15 +51,15 @@ All results from the paper can be reproduced using the scripts below:
 ## Citation
 If you're using or referring to our paper in your research or applications, please cite using this BibTeX:
 ```bibtex
-    @inproceedings{Satpute2026,
-  		title     = {Aspect-Aware Content-Based Recommendations for Mathematical Research Papers},
-  		author    = {Satpute, Ankit and Greiner-Petter, Andre and Giessing, Noah and Teschke, Olaf and Schubotz, Moritz and Aizawa, Akiko and Gipp, Bela},
-  		year      = 2026,
-  		month     = {July.},
-  		booktitle = {Proceedings of 49th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR ’26)},
-  		publisher = {ACM},
-  		address   = {Melbourne | Naarm, Australia},
-		topic     = {rec}
+@inproceedings{Satpute2026,
+	title     = {Aspect-Aware Content-Based Recommendations for Mathematical Research Papers},
+	author    = {Satpute, Ankit and Greiner-Petter, Andre and Giessing, Noah and Teschke, Olaf and Schubotz, Moritz and Aizawa, Akiko and Gipp, Bela},
+	year      = 2026,
+	month     = {July.},
+	booktitle = {Proceedings of 49th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR ’26)},
+	publisher = {ACM},
+	address   = {Melbourne | Naarm, Australia},
+	topic     = {rec}
 }
 ```
 
