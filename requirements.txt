@@ -78,7 +78,7 @@ pyasn1_modules==0.4.2
 pydantic==2.11.7
 pydantic_core==2.33.2
 pyg_lib==0.6.0.dev20251209+pt26cu124
-Pygments==2.19.2
+Pygments==2.20.0
 pynndescent==0.5.13
 pyparsing==3.2.5
 python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1733215673016/work
