@@ -68,7 +68,7 @@ nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
 packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1733203243479/work
 pandas==2.2.3
-pillow==11.1.0
+pillow==12.2.0
 preshed==3.0.10
 propcache==0.4.1
 psutil==7.1.0
