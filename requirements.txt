@@ -107,7 +107,7 @@ tenacity==9.1.2
 thinc==8.3.4
 threadpoolctl==3.6.0
 tokenizers==0.22.0
-torch==2.6.0
+torch==2.12.0
 torch-geometric==2.7.0
 torch_scatter==2.1.2+pt24cu124
 torch_sparse==0.6.18+pt24cu124
