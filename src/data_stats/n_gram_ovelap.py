@@ -14,15 +14,7 @@ warnings.filterwarnings('ignore')
 
 class NGramOverlapAnalyzer:
     """
-    Efficient n-gram overlap analyzer using pre-computed embedding top-100 candidates.
-    
-    This class handles:
-    - Data loading and preparation
-    - N-gram extraction and analysis
-    - Similarity computation
-    - Data aggregation for visualization
-    
-    All plotting is handled by separate standalone functions.
+    N-gram overlap analyzer using pre-computed embedding top-100 candidates.
     """
     
     def __init__(self, df: pd.DataFrame, goldRiM: Dict[str, list], 
@@ -34,7 +26,7 @@ class NGramOverlapAnalyzer:
             df: DataFrame with columns ['document_id', 'text', 'title']
             goldRiM: Dict with seed doc_id as key and list of recommendation doc_ids as value
             top100_dir: Directory containing top100 JSON part files
-            n: n-gram size (default: 2 for bigrams)
+            n: n-gram size (default: 1)
             citDict: Optional dict with seed doc_id as key and list of citation doc_ids as value
         """
         self.df = df.set_index('document_id')
@@ -814,8 +806,7 @@ class NGramOverlapAnalyzer:
 
 
 # ============================================
-# STANDALONE PLOTTING FUNCTIONS
-# Separated from NGramOverlapAnalyzer class
+# PLOTTING FUNCTIONS
 # ============================================
 
 import numpy as np
@@ -965,11 +956,10 @@ def plot_violin_comparison_three_way(goldrim_scores: List[float],
         print("[ERROR] No data to plot")
         return None
     
-    # Optimized for two-column Overleaf format with larger contents
+    # Single-column figure size
     fig, ax = plt.subplots(figsize=(8.5, 8.5))
     
-    # Use much closer positions to reduce spacing between violins
-    positions = [1, 1.6, 2.2]  # Tighter spacing
+    positions = [1, 1.6, 2.2]  # tighter spacing
     
     parts = ax.violinplot(data_lists, positions=positions, widths=0.45, 
                           showmeans=True, showmedians=True, showextrema=False)
@@ -996,7 +986,7 @@ def plot_violin_comparison_three_way(goldrim_scores: List[float],
         x = np.random.normal(pos, jitter_strength, size=len(data_points))
         ax.scatter(x, data_points, alpha=0.4, s=35, color=color, edgecolors='black', linewidth=0.7)
     
-    # New x-labels (split across multiple lines to avoid occlusion)
+    # Multi-line x-labels
     new_labels = [
         'GoldRiM\nrecommendations', 
         'GoldRiM\nseed-citations', 
@@ -1168,16 +1158,14 @@ def clean_numeric_id(x):
     if not isinstance(x, str):
         return x
     try:
-        # Handle cases like '0' or '0.0' → return '0'
         f = float(x)
         if f == 0:
             return '0'
-        # Otherwise, use %g to remove trailing zeros
-        return f'{f:.10g}'  # .10g avoids scientific notation for reasonable sizes
+        # strip trailing zeros
+        return f'{f:.10g}'
     except ValueError:
-        return x  # keep non-numeric strings unchanged
+        return x
 
-# Apply to your dict
 cleaned_dict = {
     clean_numeric_id(k): clean_numeric_id(v)
     for k, v in citDict.items()
@@ -1199,7 +1187,7 @@ top10_with_scores = analyzer.get_top_k_for_all_seeds_with_scores(
 
 goldrim_scores, citation_scores, top_doc_scores, stats = analyzer.get_violin_plot_data(
     top10_with_scores,
-    verbose=True  # ← Shows detailed loss breakdown for each group
+    verbose=True
 )
 
 
@@ -1208,5 +1196,5 @@ fig, ax = plot_violin_comparison_three_way(
     citation_scores=citation_scores,
     top_doc_scores=top_doc_scores,
     stats=stats,
-    save_path='violin_comparison_three_way_1GRAM.pdf'  # ← Saves as PDF for Overleaf
+    save_path='violin_comparison_three_way_1GRAM.pdf'
 )

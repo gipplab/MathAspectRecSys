@@ -5,7 +5,7 @@ import faiss
 from transformers import AutoTokenizer, AutoModel
 
 # -----------------------------
-# 1. Data loading function (modular & anonymized)
+# 1. Data loading function
 # -----------------------------
 
 def load_data():
@@ -112,12 +112,12 @@ def main():
     faiss.write_index(final_index, "faiss_index_specter.index")
     print("Index saved as 'faiss_index_specter.index'")
 
-    # Optional: Save document metadata for lookup
+    # Save document metadata for lookup
     df[['document_id', 'title']].to_csv("doc_metadata.csv", index=False)
     print("Document metadata saved as 'doc_metadata.csv'")
 
 # -----------------------------
-# 3. Example query (optional)
+# 3. Example query
 # -----------------------------
 
 def example_query(query_doc_id=725.35083):
@@ -134,7 +134,6 @@ def example_query(query_doc_id=725.35083):
 
     try:
         query_idx = df_meta.index[df_meta['document_id'] == query_doc_id].item()
-        # In practice, you'd need full text for query — this is just illustrative
         print(f"Query index: {query_idx}. Full implementation requires original text.")
     except ValueError:
         print(f"Document ID {query_doc_id} not found in metadata.")

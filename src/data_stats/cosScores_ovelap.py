@@ -44,11 +44,9 @@ def create_joyplot(input_file, output_image):
     # 2. Setup aesthetic parameters
     sns.set_theme(style="white", rc={"axes.facecolor": (0, 0, 0, 0)})
     
-    # Sort categories by mean value for a cleaner visual flow
+    # Sort categories by mean value
     category_order = df.groupby('Category')['Value'].mean().sort_values().index
     
-    # Generate a beautiful pastel palette
-    # Using 'husl' or 'pastel' with a slight fade effect
     # pal = sns.color_palette("pastel", n_colors=len(category_order))
     # 3. Create Custom Palette based on sorted order
     palette_dict = {}
@@ -72,7 +70,6 @@ def create_joyplot(input_file, output_image):
                       palette=palette_dict, row_order=category_order)
 
     # 4. Draw the densities
-    # 'fill=True' and 'alpha' create the fading/soft look
     g.map(sns.kdeplot, "Value", bw_adjust=.8, clip=(0.0,1.0), fill=True, alpha=0.6, linewidth=0,zorder=1)
     g.map(sns.kdeplot, "Value", clip=(0.0,1.0), color="white", lw=2, bw_adjust=.8,zorder=2)
 
@@ -93,7 +90,7 @@ def create_joyplot(input_file, output_image):
     g.set(yticks=[], ylabel="", xlabel="", xlim=(0.0, 1))
     g.despine(bottom=True, left=True)
     
-    # Optional: Title
+    # Title
     g.figure.suptitle('Cosine Similarity of Qwen3-7B Embeddings', fontsize=16, y=0.98, x=0.58)
 
     # Save the result
@@ -101,9 +98,9 @@ def create_joyplot(input_file, output_image):
     print(f"Joyplot saved as {output_image}")
 
 if __name__ == "__main__":
-    # Ensure your data.txt is in the same directory
-    create_joyplot('data_new.txt', 'joyplot_new.png') # data_new.txt is provided below
+    create_joyplot('data_new.txt', 'joyplot_new.png')
 
+# This was counted and used here for visualization
 # data_new.txt
 # clusters = {
 #     "Specialization / Restriction": {

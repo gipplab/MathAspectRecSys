@@ -62,11 +62,8 @@ def main():
     print(f"Loaded {len(df)} documents.")
 
     # Load SciBERT tokenizer and model
-    # Option 1: Use public model (uncomment if online)
     model_name = "allenai/scibert_scivocab_uncased"
-    
-    # Option 2: Use local model (uncomment and adjust path if offline)
-    # model_name = "models/scibert/"
+    # model_name = "models/scibert/"  # local copy
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModel.from_pretrained(model_name)
@@ -91,13 +88,13 @@ def main():
         print("Using CPU for FAISS.")
 
     # Process in batches
-    batch_size = 1000  # SciBERT is larger → smaller batch
+    batch_size = 1000
     for start in range(0, len(df), batch_size):
         batch = df.iloc[start:start + batch_size]
 
-        # Combine title and text (you can also use just 'text' if preferred)
+        # Combine title and text
         texts = [
-            f"{row['title']} {row['text']}"  # No [SEP] – SciBERT wasn't trained with it
+            f"{row['title']} {row['text']}"
             for _, row in batch.iterrows()
         ]
 
@@ -112,7 +109,7 @@ def main():
 
         with torch.no_grad():
             outputs = model(**inputs)
-            # Use mean pooling instead of [CLS] for better performance
+            # Mean pooling
             embeddings = mean_pooling(outputs, inputs['attention_mask'])
             embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
 
@@ -133,11 +130,10 @@ def main():
     print("Document metadata saved as 'doc_metadata_scibert.csv'")
 
 # -----------------------------
-# Optional: Example query
+# Example query
 # -----------------------------
 
 def example_query(query_doc_id):
-    """Example placeholder – full implementation requires original text."""
     print("Query functionality requires access to original text. See SPECTER script for pattern.")
     pass
 

@@ -70,7 +70,6 @@ class GraphInitializer:
     def _encode_text(self, *texts) -> torch.Tensor:
         """Encodes text using LLM (simulated here)"""
         combined_text = ' '.join(texts)
-        # In practice, use actual LLM embeddings (e.g., from transformers library)
         dummy_embedding = torch.randn(768)
         return self.text_encoder(dummy_embedding.unsqueeze(0)).squeeze(0)
 

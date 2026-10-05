@@ -11,7 +11,7 @@ import multiprocessing as mp
 from transformers import AutoTokenizer, AutoModel
 
 # -----------------------------
-# 1. Data Loading (modular & anonymized)
+# 1. Data Loading
 # -----------------------------
 
 def load_data():
@@ -168,7 +168,7 @@ def main():
 
     print(f"Node {args.node_id}: All processes completed.", flush=True)
 
-    # Optional: Save document IDs for later alignment
+    # Save document IDs for later alignment
     if args.node_id == 0:
         df[['document_id']].to_csv("doc_ids_order.csv", index=False)
         print("Document ID order saved to 'doc_ids_order.csv'")

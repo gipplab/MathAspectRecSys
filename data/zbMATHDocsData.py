@@ -43,7 +43,7 @@ def fetch_document(doc_id: str) -> Optional[Dict]:
             data = response.json()
             result = data.get("result", {})
             
-            # Extract fields (safe with .get())
+            # Extract fields
             title = result.get("title", "")
             authors = "; ".join([a.get("name", "") for a in result.get("author", [])])
             year = result.get("publication_year", "")
@@ -68,7 +68,7 @@ def fetch_document(doc_id: str) -> Optional[Dict]:
         return None
 
 def main():
-    # Optional: Load document IDs from a CSV (uncomment if needed)
+    # Load document IDs from a CSV
     # df_ids = pd.read_csv("recommendations.csv")  # must have 'Recommendation' column
     # DOCUMENT_IDS = df_ids["Recommendation"].dropna().astype(str).unique().tolist()
     logger.info(f"Fetching data for {len(DOCUMENT_IDS)} document IDs...")
@@ -79,7 +79,7 @@ def main():
         record = fetch_document(doc_id)
         if record:
             records.append(record)
-        # Be respectful: 1 request per second
+        # Rate limit: 1 request per second
         time.sleep(1)
 
     if records:

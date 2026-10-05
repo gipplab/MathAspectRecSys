@@ -9,7 +9,7 @@ import multiprocessing as mp
 from transformers import AutoTokenizer, AutoModel
 
 # -----------------------------
-# 1. Data Loading (modular & anonymized)
+# 1. Data Loading
 # -----------------------------
 
 def load_data():
@@ -47,9 +47,7 @@ def load_data():
 # -----------------------------
 
 def last_token_pool(last_hidden_states: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
-    """
-    Qwen uses left padding by default. This function correctly extracts the last non-padding token.
-    """
+    """Pool the last non-padding token (works with left or right padding)."""
     # Detect padding side: if last token is attended by all, it's left-padded
     left_padding = (attention_mask[:, -1].sum() == attention_mask.shape[0])
     if left_padding:
@@ -84,7 +82,7 @@ def process_gpu_batch(global_gpu_id, local_gpu_id, node_id, df_slice, model_dir,
         model_dir,
         torch_dtype=torch.float16,  # Use FP16 to fit in memory
         trust_remote_code=True,
-        device_map="auto"  # But we override with explicit placement
+        device_map="auto"
     )
     model = model.to(device)
     model.eval()
@@ -96,7 +94,7 @@ def process_gpu_batch(global_gpu_id, local_gpu_id, node_id, df_slice, model_dir,
         end = min(start + batch_size, total)
         batch = df_slice.iloc[start:end]
 
-        # Format input: Qwen performs well with clear structure
+        # Format input
         texts = [
             f"Title: {row['title']}\nAbstract: {row['text']}"
             for _, row in batch.iterrows()

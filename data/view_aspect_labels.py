@@ -1,6 +1,6 @@
 import pandas as pd
 
-# Load your dataset
+# Load dataset
 df = pd.read_csv("final_dataset.csv")
 
 # GoldRiM aspect labels

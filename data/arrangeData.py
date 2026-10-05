@@ -36,11 +36,10 @@ def main():
         how="left"
     )
 
-    # Rename title to avoid confusion (original may have Recommendation_title)
+    # Rename title to avoid clash with Recommendation_title
     combined.rename(columns={"title": "Recommendation_title_zbMATH"}, inplace=True)
 
-    # Optional: Also fetch metadata for Seed documents (if needed)
-    # Uncomment the block below if you want Seed-side metadata too
+    # Seed-side metadata (disabled)
 
     """
     print("Loading seed metadata...")

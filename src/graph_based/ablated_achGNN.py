@@ -10,31 +10,21 @@ from typing import Dict, List, Tuple
 import warnings
 warnings.filterwarnings("ignore")
 
-# -----------------------------
-# Your existing ACHGNN components (simplified for brevity)
-# -----------------------------
-
-# [PASTE YOUR EXISTING CLASSES HERE: GraphInitializer, HeterogeneousMessagePasser, 
-#  AspectConditionedScorer, AspectPredictor, ACHGNN]
-
-# For brevity, we'll assume they're defined above
-# In practice, keep them or import from a module
+from achGNN import GraphInitializer, ACHGNN
 
 # -----------------------------
 # Data Loading & Preparation
 # -----------------------------
 
 def load_data():
-    """Load your real dataset"""
-    # Load papers, authors, citations, etc.
-    # This should return:
+    """Load papers, authors, citation edges and aspect labels."""
+    # Returns:
     # papers: Dict[str, Dict]  # {paper_id: {'title': ..., 'abstract': ...}}
     # authors: Dict[str, str]   # {author_id: 'name'}
     # citations: List[Tuple]    # [(src, dst, aspect_id), ...]
     # author_papers: List[Tuple] # [(author_id, paper_id), ...]
     # aspect_labels: Dict[Tuple, int] # {(src, dst): aspect_id}
     
-    # Example placeholder - replace with your actual loading logic
     df = pd.read_csv("data/doc_metadata.csv")
     edges = pd.read_csv("data/edges_with_aspects.csv")  # cols: src, dst, aspect
     
@@ -45,7 +35,7 @@ def load_data():
             'abstract': row['text']
         }
     
-    # Build author mappings (example: use dummy authors)
+    # Build author mappings (dummy authors)
     authors = {f"a{i}": f"Author_{i}" for i in range(100)}
     author_papers = [(f"a{i % 100}", pid) for i, pid in enumerate(papers.keys())]
     
@@ -188,16 +178,12 @@ def main():
         'num_gnn_layers': args.num_layers,
         'embedding_dim': 256,
         'aspect_dim': 64,
-        'num_aspects': 4,  # Adjust based on your aspects
+        'num_aspects': 4,
         'aspect_loss_weight': 0.5,
         'lr': 1e-3,
         'epochs': 10,
         'device': 'cuda' if torch.cuda.is_available() else 'cpu'
     }
-    
-    # Update message passer parameters
-    # Note: You'll need to modify HeterogeneousMessagePasser to accept these
-    # For now, we'll assume they're passed through config
     
     # Run k-fold CV
     results = []
