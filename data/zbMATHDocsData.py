@@ -16,7 +16,7 @@ import pandas as pd
 import requests
 import time
 import logging
-from typing import List, Dict, Optional
+from typing import Dict, Optional
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -27,6 +27,9 @@ BASE_URL = "https://api.zbmath.org/v1/document/"
 
 # Output filename
 OUTPUT_FILE = "zbMATHDocsData.csv"
+
+# zbMATH Open document IDs to fetch
+DOCUMENT_IDS = ["0940.14001"]
 
 def fetch_document(doc_id: str) -> Optional[Dict]:
     """

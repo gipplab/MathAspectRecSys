@@ -4,15 +4,16 @@ set -e  # Exit immediately if any command fails
 
 # Get the directory where this script lives
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SRC_DIR="$SCRIPT_DIR/src"
+SRC_DIR="$SCRIPT_DIR"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Define output paths 
-ACHGNN_INDEX="$SCRIPT_DIR/data/achgnn.index"
+ACHGNN_INDEX="$ROOT_DIR/data/achgnn.index"
 
-RETRIEVED_ACHGNN="$SCRIPT_DIR/data/retrieved_achgnn.json"
+RETRIEVED_ACHGNN="$ROOT_DIR/data/retrieved_achgnn.json"
 
 # Ensure output dir exists
-mkdir -p "$SCRIPT_DIR/data"
+mkdir -p "$ROOT_DIR/data"
 
 # Helper function to run a pipeline for one model
 run_pipeline() {

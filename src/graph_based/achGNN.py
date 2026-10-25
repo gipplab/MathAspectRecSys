@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.nn import GraphSAGE
-import numpy as np
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple
 
 
 # ==================== Graph Initialization ====================
@@ -69,9 +67,9 @@ class GraphInitializer:
     
     def _encode_text(self, *texts) -> torch.Tensor:
         """Encodes text using LLM (simulated here)"""
-        combined_text = ' '.join(texts)
         dummy_embedding = torch.randn(768)
-        return self.text_encoder(dummy_embedding.unsqueeze(0)).squeeze(0)
+        with torch.no_grad():
+            return self.text_encoder(dummy_embedding.unsqueeze(0)).squeeze(0)
 
 
 # ==================== Heterogeneous Message Passing ====================
@@ -236,7 +234,7 @@ class AspectConditionedScorer(nn.Module):
         s_{q,c}^(as_k) = f_score(z_{q,c}^(as_k))
         """
         # Get aspect embedding e_{as_k}
-        aspect_emb = self.aspect_embeddings(torch.tensor(aspect_id))
+        aspect_emb = self.aspect_embeddings(torch.tensor(aspect_id, device=query_emb.device))
         
         # Construct interaction vector: [h_q || h_c || h_q ⊙ h_c || e_{as_k}]
         element_wise_product = query_emb * candidate_emb  # h_q ⊙ h_c
@@ -309,7 +307,9 @@ class ACHGNN(nn.Module):
                  aspect_dim: int = 64,
                  num_aspects: int = 3,
                  num_gnn_layers: int = 2,
-                 aspect_loss_weight: float = 0.5):
+                 aspect_loss_weight: float = 0.5,
+                 paper_neighbors: int = 20,
+                 author_neighbors: int = 5):
         super().__init__()
         
         self.embedding_dim = embedding_dim
@@ -317,10 +317,12 @@ class ACHGNN(nn.Module):
         self.aspect_loss_weight = aspect_loss_weight
         
         # Components
-        self.message_passer = HeterogeneousMessagePassing(
+        self.message_passer = HeterogeneousMessagePasser(
             input_dim=embedding_dim,
             hidden_dim=embedding_dim,
-            num_layers=num_gnn_layers
+            num_layers=num_gnn_layers,
+            paper_neighbors=paper_neighbors,
+            author_neighbors=author_neighbors
         )
         self.aspect_scorer = AspectConditionedScorer(
             embedding_dim=embedding_dim,
@@ -381,7 +383,7 @@ class ACHGNN(nn.Module):
             # Cross-entropy loss
             ce_loss = F.cross_entropy(
                 aspect_logits.unsqueeze(0),
-                torch.tensor([aspect_id])
+                torch.tensor([aspect_id], device=aspect_logits.device)
             )
             aspect_losses.append(ce_loss)
         
@@ -508,6 +510,6 @@ if __name__ == "__main__":
         top_k=3
     )
     
-    print(f"\nTop-3 recommendations for p1 (aspect: background):")
+    print("\nTop-3 recommendations for p1 (aspect: background):")
     for paper_id, score in recommendations:
         print(f"  {paper_id}: {score:.4f}")

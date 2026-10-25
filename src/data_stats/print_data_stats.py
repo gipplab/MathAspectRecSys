@@ -6,7 +6,7 @@ df = pd.read_csv("final_dataset.csv")
 # Split into Gold and Silver
 gold = df[df['GoldRiM'] == 1]
 silver = df[df['SilverRiM'] == 1]
-silver = df[df['PwC'] == 1]
+pwc = df[df['PwC'] == 1] if 'PwC' in df.columns else None
 
 def print_stats(subset, name):
     total_seeds = subset['Seed'].nunique()
@@ -26,7 +26,8 @@ def print_stats(subset, name):
 # Print stats
 print_stats(gold, "GoldRiM")
 print_stats(silver, "SilverRiM")
-print_stats(pwc, "PwC")
+if pwc is not None:
+    print_stats(pwc, "PwC")
 
 # Optional: Overall stats
 print_stats(df, "Overall")

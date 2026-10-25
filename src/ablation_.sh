@@ -8,6 +8,7 @@
 
 set -e  # Exit on error
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUTPUT_DIR="ablation_results"
 mkdir -p "$OUTPUT_DIR"
 
@@ -36,7 +37,7 @@ for auth in "${AUTHORS[@]}"; do
             fi
             
             # Run the experiment
-            python train_achgnn_ablation.py \
+            python "$SCRIPT_DIR/graph_based/ablated_achGNN.py" \
                 --num_authors $auth \
                 --num_neighbors $neigh \
                 --num_layers $layer \

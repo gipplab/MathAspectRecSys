@@ -2,10 +2,8 @@ import os
 import json
 import argparse
 import torch
-import torch.nn as nn
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import KFold
 from typing import Dict, List, Tuple
 import warnings
 warnings.filterwarnings("ignore")
@@ -79,8 +77,9 @@ def train_and_evaluate(config: Dict, fold: int = 0):
     )
     
     # Initialize embeddings
-    paper_embeddings = {pid: graph['paper_nodes'][pid]['embedding'] for pid in papers.keys()}
-    author_embeddings = {aid: graph['author_nodes'][aid]['embedding'] for aid in authors.keys()}
+    device = config['device']
+    paper_embeddings = {pid: graph['paper_nodes'][pid]['embedding'].to(device) for pid in papers.keys()}
+    author_embeddings = {aid: graph['author_nodes'][aid]['embedding'].to(device) for aid in authors.keys()}
     
     # Prepare positive/negative pairs
     positive_pairs = list(aspect_labels.keys())
@@ -98,8 +97,10 @@ def train_and_evaluate(config: Dict, fold: int = 0):
         aspect_dim=config['aspect_dim'],
         num_aspects=config['num_aspects'],
         num_gnn_layers=config['num_gnn_layers'],
-        aspect_loss_weight=config['aspect_loss_weight']
-    ).to(config['device'])
+        aspect_loss_weight=config['aspect_loss_weight'],
+        paper_neighbors=config['num_neighbors'],
+        author_neighbors=config['num_authors']
+    ).to(device)
     
     optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'])
     

@@ -87,7 +87,7 @@ To do so, it requests the data via the official API:
 
 🔗 **zbMATH Open API:** https://api.zbmath.org/v1/
 
-In order to fetch data from a file, uncomment and adjust lines 72 and 73. Then run:
+In order to fetch data from a file, set `DOCUMENT_IDS` at the top of the script, or uncomment and adjust lines 75 and 76. Then run:
 
 ```sh
 python zbMATHDocsData.py

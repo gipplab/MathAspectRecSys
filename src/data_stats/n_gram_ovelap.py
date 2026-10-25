@@ -6,6 +6,7 @@ from typing import Dict, Tuple, List, Set
 import re
 from tqdm import tqdm
 import json
+import pickle
 import glob
 import os
 import warnings
@@ -1150,51 +1151,87 @@ def print_summary_stats_three_way(summary: dict):
     
     print(f"{'='*80}\n")
 
-# load GoldRiM
-# load zbRevQual_cit_fw_bw.pickle as citDict
-# you need to convert it via rmeoving 0 at start and end to get elements from df
-
 def clean_numeric_id(x):
+    """Normalize zbMATH IDs, e.g. '0940.14001' -> '940.14001'."""
     if not isinstance(x, str):
         return x
     try:
         f = float(x)
         if f == 0:
             return '0'
-        # strip trailing zeros
+        # strip leading/trailing zeros
         return f'{f:.10g}'
     except ValueError:
         return x
 
-cleaned_dict = {
-    clean_numeric_id(k): clean_numeric_id(v)
-    for k, v in citDict.items()
-}
 
-# assuming that you have already downloaded data from "data/" folder in the repository
+def load_goldrim(dataset_path: str) -> Dict[str, list]:
+    """Build {seed: [recommendations]} from the GoldRiM rows of the dataset CSV."""
+    rec_df = pd.read_csv(dataset_path, dtype=str)
+    gold = rec_df[rec_df['GoldRiM'].astype(str).str.strip() == '1']
+    goldRiM = {}
+    for seed, recs in zip(gold['Seed'], gold['Recommendation']):
+        recs = [clean_numeric_id(r.strip()) for r in str(recs).split(';') if r.strip()]
+        goldRiM.setdefault(clean_numeric_id(seed), []).extend(recs)
+    return goldRiM
 
-analyzer = NGramOverlapAnalyzer(
+
+def load_citations(pickle_path: str) -> Dict[str, list]:
+    """Load the citation dict (zbRevQual_cit_fw_bw.pickle) with normalized IDs."""
+    with open(pickle_path, 'rb') as f:
+        citDict = pickle.load(f)
+    cleaned = {}
+    for k, v in citDict.items():
+        if isinstance(v, (list, tuple, set)):
+            cleaned[clean_numeric_id(k)] = [clean_numeric_id(c) for c in v]
+        else:
+            cleaned[clean_numeric_id(k)] = [clean_numeric_id(v)]
+    return cleaned
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset', default='mathRec_dataset.csv',
+                        help='GoldRiM/SilverRiM CSV downloaded via data/Readme.md')
+    parser.add_argument('--docs', default='data/doc_metadata.csv',
+                        help='CSV with columns document_id, title, text')
+    parser.add_argument('--citations', default='zbRevQual_cit_fw_bw.pickle')
+    parser.add_argument('--top100_dir', default='top100',
+                        help='Directory with maRDI_top100_*_part_*.json files')
+    parser.add_argument('--n', type=int, default=1)
+    parser.add_argument('--k', type=int, default=10)
+    args = parser.parse_args()
+
+    df = pd.read_csv(args.docs, dtype={'document_id': str})
+    df['document_id'] = df['document_id'].map(clean_numeric_id)
+
+    goldRiM = load_goldrim(args.dataset)
+    citDict = load_citations(args.citations) if os.path.exists(args.citations) else {}
+
+    analyzer = NGramOverlapAnalyzer(
         df=df,
-        goldRiM=goldRiM_, 
-        citDict=citDict,
-        n=2
+        goldRiM=goldRiM,
+        top100_dir=args.top100_dir,
+        n=args.n,
+        citDict=citDict
     )
 
-top10_with_scores = analyzer.get_top_k_for_all_seeds_with_scores(
-    k=10,
-    limit=None
-)
+    top_k_with_scores = analyzer.get_top_k_for_all_seeds_with_scores(
+        k=args.k,
+        limit=None
+    )
 
-goldrim_scores, citation_scores, top_doc_scores, stats = analyzer.get_violin_plot_data(
-    top10_with_scores,
-    verbose=True
-)
+    goldrim_scores, citation_scores, top_doc_scores, stats = analyzer.get_violin_plot_data(
+        top_k_with_scores,
+        verbose=True
+    )
 
-
-fig, ax = plot_violin_comparison_three_way(
-    goldrim_scores=goldrim_scores,
-    citation_scores=citation_scores,
-    top_doc_scores=top_doc_scores,
-    stats=stats,
-    save_path='violin_comparison_three_way_1GRAM.pdf'
-)
+    fig, ax = plot_violin_comparison_three_way(
+        goldrim_scores=goldrim_scores,
+        citation_scores=citation_scores,
+        top_doc_scores=top_doc_scores,
+        stats=stats,
+        save_path=f'violin_comparison_three_way_{args.n}GRAM.pdf'
+    )

@@ -26,7 +26,7 @@ We offer supplementary materials in (`material`), such as a summary table of exi
 
 ## Source Code
 
-All source code is available in `src`. Any experiments, scripts, or other attempts to reproduce the data require to load the python virtual environment below.
+The source code is in `src`. To run any of the experiments or scripts, first set up the Python virtual environment below.
 
 ```bash
 python -m venv venv
@@ -34,17 +34,21 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Code Availability
+
+> **Note:** The repository currently contains the datasets, the model implementations (AchGNN and the baselines) and the data analysis scripts. The full end-to-end experiment pipeline was originally built around our internal zbMATH Open / MaRDI infrastructure. We are refactoring it so that it runs outside that environment, with fixed seeds, configuration files and documented preprocessing. This covers the retrieval and evaluation scripts (`src/retrieval_/`), the remaining index builders and the PwC preprocessing. These parts will be released here soon, once the reproducibility changes are complete. Until then, feel free to open an issue or contact the corresponding author if you need something specific.
+
 ## Reproducing Results
 
-All results from the paper can be reproduced using the scripts below:
+The scripts below map to the results in the paper:
 
 | Figure/Table | Script | Description |
 |---|---|---|
-| **Figure 3** | `python src/data_stats/n_gram_overlap.py` | N-gram overlap analysis |
-| **Figure 4** | `python src/data_stats/cosScores_overlap.py` | Cosine similarity scores (pre-computed; run `src/eval/createIndexes.py` for fresh scores) |
-| **Table 1** | `python src/data_stats/print_data_stats.py` | Dataset statistics (requires loaded dataframes from `data/`) |
-| **Table 2** | `bash src/get_eval_goldRiM_silverRiM.sh` | GoldRiM vs SilverRiM evaluation |
-| **Table 3** | `bash src/get_eval_pwc.sh` | Papers with Code evaluation |
+| **Figure 3** | `python src/data_stats/n_gram_ovelap.py --dataset <dataset.csv> --docs <docs.csv> --top100_dir <dir>` | N-gram overlap analysis |
+| **Figure 4** | `python src/data_stats/cosScores_ovelap.py` | Cosine similarity scores (pre-computed; build fresh indexes with the scripts in `src/create_indexes/`) |
+| **Table 1** | `python src/data_stats/print_data_stats.py` | Dataset statistics (requires the dataset CSV from `data/`) |
+| **Table 2** | `bash src/get_eval_goldRiM_silverRiM.sh` | GoldRiM vs SilverRiM evaluation (requires the retrieval/evaluation scripts, release pending) |
+| **Table 3** | `bash src/get_eval_pwc.sh` | Papers with Code evaluation (requires the retrieval/evaluation scripts, release pending) |
 | **Figures 7–8** | `bash src/ablation_.sh` | Ablation study results |
 
 
