@@ -1,0 +1,6 @@
+# local notes and outputs (not part of the repository)
+.notes/
+experiments/
+slurm/logs/
+.venv/
+data/mathRec_dataset.csv

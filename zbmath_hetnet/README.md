@@ -1,37 +1,24 @@
-# zbMATH Open author–document heterogeneous network
+# zbMATH Open Author–Document Network
 
-Harvests **all** documents and authors from the [zbMATH Open API](https://api.zbmath.org/v1) and builds a
-heterogeneous graph in which documents are connected through **citations** and through their **authors**.
+Harvests documents and authors from the [zbMATH Open API](https://api.zbmath.org/v1) and builds a heterogeneous network in which documents are connected through citations and authors:
 
 ```
 author ──writes──▶ document ──cites──▶ document
 ```
 
-| Node type  | ID                                             | Source                                                   |
-|------------|------------------------------------------------|----------------------------------------------------------|
-| `author`   | zbMATH author code, e.g. `serre.jean-pierre`   | `/v1/author/_search` (+ codes seen on documents)         |
-| `document` | zbMATH document id, e.g. `3639144`             | `/v1/document/_search` (+ ids seen only in references)   |
+| Node type  | Identifier                                     | Source                                                 |
+|------------|------------------------------------------------|--------------------------------------------------------|
+| `author`   | zbMATH author code, e.g. `serre.jean-pierre`   | `/v1/author/_search` and author codes on documents     |
+| `document` | zbMATH document id, e.g. `3639144`             | `/v1/document/_search` and ids in reference lists      |
 
-| Edge type  | From → to            | Source                                                       |
-|------------|----------------------|--------------------------------------------------------------|
-| `writes`   | author → document    | `contributors.authors[].codes` of each document              |
-| `cites`    | document → document  | `references[].zbmath.document_id` of each document           |
+| Edge type  | From → to            | Source                                               |
+|------------|----------------------|------------------------------------------------------|
+| `writes`   | author → document    | `contributors.authors[].codes`                       |
+| `cites`    | document → document  | `references[].zbmath.document_id`                    |
 
 ## Usage
 
-```bash
-pip install -r requirements.txt
-bash run_all.sh output          # = the three steps below
-```
-
-1. **Crawl** – `python crawl.py all --out-dir output [--workers 4]`
-   Stores the raw API records unchanged (gzipped JSON lines) in `output/raw/{document,author}/shards/`.
-2. **Build** – `python build_graph.py --out-dir output [--with-text]`
-   Writes node/edge tables to `output/graph/`.
-3. **Export** (optional) – `python export_graph.py --out-dir output --format pyg|networkx`
-   Saves a PyTorch Geometric `HeteroData` (`hetnet.pyg.pt`) or a `networkx.MultiDiGraph` (`hetnet.nx.pkl`).
-
-Try it on a small slice first:
+### Try it on a small slice first:
 
 ```bash
 python crawl.py documents --out-dir sample --query "py:2020 & cc:*35K"
@@ -40,37 +27,50 @@ python build_graph.py --out-dir sample
 python export_graph.py --out-dir sample --format networkx
 ```
 
-## Output (`output/graph/`)
+you can use test_graph.py to check for sample node and its connections.
 
-| File                | Columns |
-|---------------------|---------|
-| `documents.csv.gz`  | doc_id, zbl_id, title, year, document_type, language, msc (`;`-separated, primary first), keywords, source, doi, arxiv, zbmath_url, n_authors, n_references, n_resolved_references, in_crawl (+ review with `--with-text`) |
-| `authors.csv.gz`    | author_code, name, main_fields (2-digit MSC), spellings, external_ids (JSON: orcid, wikidata, mgp, …), awards, zbmath_url, in_author_api |
-| `writes.csv.gz`     | author_code, doc_id, author_position |
-| `cites.csv.gz`      | citing_doc_id, cited_doc_id, reference_position |
-| `graph_stats.json`  | node/edge counts |
+### Full run
 
-`in_crawl = False` marks documents only known from another document's reference list; `in_author_api = False`
-marks author codes that appear on documents but were not returned by the author endpoint. Any field not in the
-tables is still available in the raw records. Fields the API withholds for licensing reasons
-("contents unavailable due to conflicting licenses") are left empty.
+```bash
+pip install -r requirements.txt
+python crawl.py all --out-dir output                      # all documents and authors (resumable)
+python build_graph.py --out-dir output [--with-text]      # node and edge tables
+python export_graph.py --out-dir output --format pyg      # optional: PyTorch Geometric or networkx object
+```
 
-## How the crawl covers everything
+`run_all.sh` runs the three steps in sequence.
 
-The API returns at most 10,000 hits per query (`page * results_per_page ≤ 10,000`, ≤ 500 per page) and has no
-cursor. `partition.py` therefore splits the search into disjoint sub-queries of ≤ 10,000 hits each:
+Specific documents can be fetched by Zbl number or document id, optionally including the documents they cite:
 
-- documents: decade → year (`py:2020`) → primary MSC (`cc:*35`, `cc:*35K`, `cc:*35K55`) → document type (`dt:j`)
+```bash
+python fetch_ids.py --ids-file ids.txt --out-dir output --citation-hops 1
+```
+
+A crawl can be restricted with a zbMATH search string, e.g. `--query "py:2020 & cc:*35K"` for documents and `--author-query "ai:bh*"` for authors.
+
+## Output
+
+Raw API records are stored unchanged as gzipped JSON lines in `output/raw/{document,author}/shards/`. `build_graph.py` writes:
+
+| File (`output/graph/`) | Columns |
+|------------------------|---------|
+| `documents.csv.gz` | doc_id, zbl_id, title, year, document_type, language, msc (`;`-separated, primary first), keywords, source, doi, arxiv, zbmath_url, n_authors, n_references, n_resolved_references, in_crawl (+ review with `--with-text`) |
+| `authors.csv.gz` | author_code, name, main_fields, spellings, external_ids (JSON), awards, zbmath_url, in_author_api |
+| `writes.csv.gz` | author_code, doc_id, author_position |
+| `cites.csv.gz` | citing_doc_id, cited_doc_id, reference_position |
+| `graph_stats.json` | node and edge counts |
+
+Documents known only from another document's reference list have `in_crawl = False`; author codes that occur on documents but not in the author endpoint have `in_author_api = False`. Fields withheld by the API for licensing reasons are left empty.
+
+## Harvesting Strategy
+
+The API returns at most 10,000 hits per query (at most 500 per page) and offers no cursor. `partition.py` therefore splits the search space into disjoint sub-queries with at most 10,000 hits each:
+
+- documents: decade → year → primary MSC class (2, 3 and 5 characters) → document type
 - authors: author-code prefix (`ai:a*`, `ai:ab*`, …)
 
-Every split also adds a residual query `parent & !(child1 | child2 | …)`, so records that match no child (e.g.
-documents without MSC code) are not lost. The plan (with hit counts) is saved in `raw/<endpoint>/plan.json`; leaves
-that could not be split below 10,000 hits are flagged `"truncated": true` and logged.
+Each split adds a residual query `parent & !(child_1 | … | child_n)`, so the sub-queries always cover their parent completely. The plan with its hit counts is stored in `raw/<endpoint>/plan.json`; finished shards are skipped when a crawl is restarted.
 
-## Runtime and size
+## Runtime and Storage
 
-The API spends roughly 30 ms per returned document, so a full crawl of ~5.2M documents takes on the order of a day
-or more, depending on `--workers` and server load; authors (~1.4M) are much faster. Raw document shards take about
-2 KB per document gzipped (~10 GB in total). The crawl is resumable: interrupt and re-run the same command, finished
-shards are skipped. Please keep `--workers` moderate (and use `--min-interval` if the API asks you to slow down) –
-this is a shared public service.
+A full crawl of about 5.2 million documents takes on the order of one to two days, depending on `--workers` and server load; the 1.4 million authors take considerably less. Raw document shards require about 2 KB per document (≈ 10 GB in total). Please keep the number of parallel requests moderate and use `--min-interval` when requested by the service.

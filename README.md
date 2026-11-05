@@ -10,47 +10,87 @@
 ## Abstract
 This repository contains an aspect-aware content-based research paper recommendation system code and dataset designed specifically for mathematics, where relatedness is often conceptual rather than based on textual similarity or citation overlap. Unlike existing approaches that work well in domains such as computer science or biomedicine, this project addresses the unique challenges of mathematical literature by modeling connections through shared proof techniques, logical implications, and theoretical generalizations. The project introduces GoldRiM and SilverRiM, the first datasets for aspect-aware mathematical paper recommendation, and presents AchGNN, an aspect-conditioned heterogeneous graph neural network that integrates textual semantics, citation networks, and author relationships. Experimental results show that AchGNN consistently outperforms prior recommendation methods across multiple aspects and also generalizes effectively to machine learning literature. The system has been deployed on the MaRDI platform [An example document with recommendations](https://portal.mardi4nfdi.de/wiki/Publication:3361952) to support mathematical research discovery.
 
-This repository includes the complete source code (`src`), datasets (`data`), and supplementary materials (`material`).
+## Repository Structure
+
+| Path | Content |
+|------|---------|
+| [`data/`](data/Readme.md) | GoldRiM and SilverRiM: description, download and loading |
+| [`zbmath_hetnet/`](zbmath_hetnet/README.md) | Harvesting zbMATH Open and building the author–document citation network |
+| [`achgnn/`](achgnn/README.md) | AchGNN: graph construction, node features, training, evaluation and recommendation |
+| [`slurm/`](slurm/) | Job scripts for running the full pipeline on a GPU cluster |
+| `src/` | Baseline indexers, data analysis and ablation scripts |
+| `material/` | Supplementary material: related datasets, aspect definitions, additional plots |
+
+## Installation
+
+Python 3.10 or newer is required. Install PyTorch for your platform first ([pytorch.org](https://pytorch.org/get-started/locally/); CUDA builds for GPU training), then the pipeline dependencies:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+pip install torch                    # or a CUDA build, e.g. --index-url https://download.pytorch.org/whl/cu124
+pip install -r achgnn/requirements.txt -r zbmath_hetnet/requirements.txt
+```
+
+The scripts in `src/` use the pinned environment in `requirements.txt`.
 
 ## Data
 
-This repository includes scripts to obtain and prepare the two datasets:
-- **SilverRiM**: Automatically generated aspect-aware recommendations
-- **GoldRiM**: Gold standard manually curated recommendations
+The repository provides two datasets:
+- **SilverRiM**: automatically derived aspect-aware recommendations (training and evaluation)
+- **GoldRiM**: expert-curated recommendations (evaluation)
 
-See `data/README.md` for detailed setup instructions and dataset descriptions.
+Both are distributed as a single CSV file of zbMATH Open document pairs. See [`data/Readme.md`](data/Readme.md) for the download link, the file format and examples. The pipeline below expects the file at `data/mathRec_dataset.csv`.
+
+## Pipeline
+
+AchGNN operates on a heterogeneous graph of zbMATH Open papers and authors. The complete pipeline consists of five steps:
+
+| Step | Command | Output |
+|------|---------|--------|
+| 1. Harvest zbMATH Open | `python zbmath_hetnet/crawl.py all --out-dir experiments/zbmath` | raw API records |
+| 2. Build the networks | `python achgnn/dataset.py`, `python zbmath_hetnet/build_graph.py --with-text`, `python achgnn/prepare_graph.py` | paper–author graph, labelled pairs |
+| 3. Node features | `python achgnn/embed.py --encoder hf --devices all` | Qwen3 embeddings of papers and authors |
+| 4. Training | `torchrun --nproc_per_node=<GPUs> achgnn/train.py` | trained model, metrics |
+| 5. Evaluation and recommendation | `achgnn/evaluate.py`, `achgnn/summarize.py`, `achgnn/recommend.py` | P@10, R@10, MRR; aspect-specific recommendations |
+
+Commands with all arguments are given in [`achgnn/README.md`](achgnn/README.md). Every step runs on CPU or GPU; steps 3 and 4 use all GPUs of a node when available.
+
+A small-scale run (a subset of SilverRiM, all GoldRiM pairs and the zbMATH documents they involve, CPU only) executes the complete pipeline end to end in a few minutes:
+
+```bash
+bash achgnn/run_sample.sh data/mathRec_dataset.csv
+```
+
+## Running on a SLURM Cluster
+
+The `slurm/` directory contains one job script per pipeline step, configured for a node with 4 × NVIDIA A100 80 GB.
+
+1. Adjust partition, account and paths in [`slurm/config.sh`](slurm/config.sh).
+2. On a login node with internet access, create the environment and download the dataset and the Qwen3 encoder weights:
+   ```bash
+   bash slurm/setup_env.sh
+   ```
+3. Submit the pipeline from the repository root as a chain of dependent jobs:
+   ```bash
+   bash slurm/submit_all.sh                # crawl → prepare → embed → train (5 folds) → evaluate
+   bash slurm/submit_all.sh --skip-crawl   # when the zbMATH crawl is already available
+   ```
+
+| Script | Resources | Step |
+|--------|-----------|------|
+| `01_crawl.sbatch` | CPU, internet access | harvest zbMATH Open (resumable) |
+| `02_prepare.sbatch` | CPU, 192 GB RAM | dataset pairs, zbMATH network, AchGNN graph |
+| `03_embed.sbatch` | 4 GPUs | Qwen3-Embedding-8B features, one worker per GPU (resumable) |
+| `04_train.sbatch` | 4 GPUs, job array 0–4 | DDP training and evaluation, one task per cross-validation fold (resumable) |
+| `05_evaluate.sbatch` | 4 GPUs | evaluation of all folds and mean ± std summary |
+
+Individual steps can be submitted on their own, e.g. `sbatch --partition=<partition> --array=0 slurm/04_train.sbatch`. Logs are written to `slurm/logs/`, results to `experiments/work/runs/`.
+
 
 ## Supplementary Materials
 
 We offer supplementary materials in (`material`), such as a summary table of existing CbRPR datasets, alternative visualizations of the results, definitions of aspect labels, and additional plots.
-
-## Source Code
-
-The source code is in `src`. To run any of the experiments or scripts, first set up the Python virtual environment below.
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-## Code Availability
-
-> **Note:** The repository currently contains the datasets, the model implementations (AchGNN and the baselines) and the data analysis scripts. The full end-to-end experiment pipeline was originally built around our internal zbMATH Open / MaRDI infrastructure. We are refactoring it so that it runs outside that environment, with fixed seeds, configuration files and documented preprocessing. This covers the retrieval and evaluation scripts (`src/retrieval_/`), the remaining index builders and the PwC preprocessing. These parts will be released here soon, once the reproducibility changes are complete. Until then, feel free to open an issue or contact the corresponding author if you need something specific.
-
-## Reproducing Results
-
-The scripts below map to the results in the paper:
-
-| Figure/Table | Script | Description |
-|---|---|---|
-| **Figure 3** | `python src/data_stats/n_gram_ovelap.py --dataset <dataset.csv> --docs <docs.csv> --top100_dir <dir>` | N-gram overlap analysis |
-| **Figure 4** | `python src/data_stats/cosScores_ovelap.py` | Cosine similarity scores (pre-computed; build fresh indexes with the scripts in `src/create_indexes/`) |
-| **Table 1** | `python src/data_stats/print_data_stats.py` | Dataset statistics (requires the dataset CSV from `data/`) |
-| **Table 2** | `bash src/get_eval_goldRiM_silverRiM.sh` | GoldRiM vs SilverRiM evaluation (requires the retrieval/evaluation scripts, release pending) |
-| **Table 3** | `bash src/get_eval_pwc.sh` | Papers with Code evaluation (requires the retrieval/evaluation scripts, release pending) |
-| **Figures 7–8** | `bash src/ablation_.sh` | Ablation study results |
-
 
 ## Citation
 If you're using or referring to our paper in your research or applications, please cite using this BibTeX:
